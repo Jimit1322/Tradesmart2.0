@@ -6,43 +6,63 @@ React | Node.js | Express | Python | yFinance | REST API | Lightweight-Charts
 3.Built a RESTful API using Node.js and Express that interfaces with Python scripts, handles dynamic symbol-based data retrieval, and returns filtered stocks matching momentum criteria (close price within 0.5% of EMA22).
 4.Developed a responsive React frontend with lightweight-charts to visualize candlestick patterns and EMA lines in real-time, integrated stock CSV export, and applied consistent UI styling for trader-friendly interaction. -->
 
-#  TradeSmart – Real-Time Momentum Stock Scanner
+# 📈 TradeSmart 2.0 - Momentum Retest Stock Scanner
 
-A full-stack web application that scans NSE-listed stocks to identify real-time momentum opportunities using technical indicators. The system leverages 5-minute OHLC data and computes 22-period Exponential Moving Averages (EMA) to filter stocks that are trading near momentum zones.
+**TradeSmart 2.0** is a full-stack stock scanner that identifies **momentum stocks**  which are **retesting their 22 EMA** after a strong move. It combines a Python-based backend for data fetching and analysis with a React frontend for interactive charting.
 
-## Tech Stack
+---
 
-- **Frontend**: React, Lightweight-Charts
-- **Backend**: Node.js, Express (REST API)
-- **Data Processing**: Python, yFinance
-- **Other**: Pandas, Blob CSV Export, JSON, Styled Components
+## 🚀 Features
 
-##  Key Features
-
--  **Stock Momentum Detection**  
-  Fetches 5-minute interval data for the last X days and filters stocks whose latest price is within Y% of the 22 EMA using `yfinance` and Pandas.
-
-- **Backend REST API Integration**  
-  Node.js Express server triggers Python scripts and serves processed stock data via custom REST API endpoints (e.g., `/api/scan`, `/api/ohlc/:symbol`).
-
--  **Candlestick Chart Visualization**  
-  React frontend displays candlestick charts using `lightweight-charts`, with overlay of 22 EMA line for clear momentum insight.
-
--  **CSV Export**  
-  Download filtered stock data in CSV format directly from the frontend for quick analysis or import into trading platforms.
-
-##  Getting Started
-
-1. Install dependencies:
-   ```bash
-   npm install
-   pip install -r requirements.txt
-   ## for backend
-   cd backend
-   node server.js or nodemon server.js
-   ## for frontend(open in another terminal)
-   cd frontend
-   npm run dev
+- 📊 Scans for **5-minute candle momentum** in the last few sessions.
+- 🔁 Detects **retest** of 22 EMA after strong bullish momentum.
+- 🔎 Only includes stocks where **last 3 candles** gained **>0.5%** and closed above previous highs.
+- 🧠 Uses **Yahoo Finance API** to fetch real-time OHLC and volume data.
+- 🧾 One-click download of matching stocks as **CSV**.
+- 🧩 Interactive **candlestick + EMA + volume charts** using `lightweight-charts`.
+- 📉 Toggleable **volume bar** and hover-based candle info (OHLC, % change, volume).
 
 
-   
+---
+
+## 🧠 Strategy Logic
+
+This scanner identifies **stocks in momentum** followed by a **pullback to 22 EMA**, signaling potential Intraday entries.
+
+1. **Momentum Detection**
+   - Backtracks 40 to 5 candles from the end.
+   - Looks for any 3-candle segment where **at least 3 candles**:
+     - Are **bullish** (close > open),
+     - Have **>0.5% gain**, and
+     - Close **above previous high**.
+
+2. **Retest Condition**
+   - The current (latest) candle’s **close is within ±0.5% of the 22 EMA**.
+   - If both conditions are satisfied, the stock is included in the result.
+
+---
+
+## 🛠 Tech Stack
+
+| Layer       | Tech                         |
+|------------|------------------------------|
+| Backend     | Python, `yfinance`, `pandas` |
+| Frontend    | React, `lightweight-charts`  |
+| Server/API  | Node.js, Express.js          |
+| Charting    | Candlesticks, EMA, Volume    |
+
+---
+
+## **Commands To Run on Terminal**
+
+```bash
+pip install -r scan/requirements.txt
+
+cd backend
+npm install
+node server.js
+
+cd frontend
+npm install
+npm run dev
+
