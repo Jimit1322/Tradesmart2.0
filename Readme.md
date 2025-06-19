@@ -1,10 +1,12 @@
-<!-- TradeSmart – Real-Time Momentum Stock Scanner
-React | Node.js | Express | Python | yFinance | REST API | Lightweight-Charts
+<!-- Full-Stack Trading Tool (Python, Node.js, React, Lightweight-Charts)
 
-1.Engineered a full-stack momentum scanner that identifies intraday trading opportunities by analyzing 5-minute OHLC data and computing 22-period Exponential Moving Averages (EMA) for NSE stocks using yfinance.
-2.Implemented a Python-based data pipeline to fetch and preprocess live stock data, calculate EMA-22, and serialize results into JSON format, forming the data backbone of the application.
-3.Built a RESTful API using Node.js and Express that interfaces with Python scripts, handles dynamic symbol-based data retrieval, and returns filtered stocks matching momentum criteria (close price within 0.5% of EMA22).
-4.Developed a responsive React frontend with lightweight-charts to visualize candlestick patterns and EMA lines in real-time, integrated stock CSV export, and applied consistent UI styling for trader-friendly interaction. -->
+Developed a real-time stock scanner that identifies NSE-listed equities showing strong momentum followed by a retest near the 22-period EMA using 5-minute interval data.
+
+Implemented backend logic in Python to fetch historical OHLC and volume data via yfinance, apply EMA and price action filters, and serve results through a Node.js Express API.
+
+Designed a dynamic React frontend that visualizes candlestick charts with EMA overlays and toggleable volume histograms using lightweight-charts, with interactive hover insights.
+
+Optimized for live usage by integrating automatic cleanup of temporary data files and CSV export functionality; ensured crosshair-driven candle analytics (OHLC, volume, % change) for trade decision-making. -->
 
 # 📈 TradeSmart 2.0 - Momentum Retest Stock Scanner
 
