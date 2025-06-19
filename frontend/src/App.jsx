@@ -12,7 +12,7 @@ const App = () => {
     const fetchStocks = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:4000/api/scan");
+        const res = await fetch("http://localhost:4000/api/scan/listofstocks");
         if (!res.ok) throw new Error("Failed to fetch stock data");
         const data = await res.json();
         setStocks(data);
