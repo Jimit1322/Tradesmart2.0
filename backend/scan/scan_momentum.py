@@ -12,9 +12,9 @@ symbols = df["SYMBOL"].dropna().unique()
 
 momentum_retest_stocks = []
 
-momentum_length = 3
+momentum_length = 5
 required_strong_candles = 3
-ema_percent = 0.05
+ema_percent = 0.005
 
 for symbol in symbols:
     symbol_yf = symbol + ".NS"
@@ -57,7 +57,7 @@ for symbol in symbols:
                 o = window["Open"].iloc[j]
                 prev_high = window["High"].iloc[j - 1] if j > 0 else o
 
-                if (c > o) and ((c - o) / o > 0.004) and (c > prev_high):
+                if (c > o) and ((c - o) / o > 0.005) and (c > prev_high):
                     strong_candles += 1
 
             if strong_candles >= required_strong_candles:

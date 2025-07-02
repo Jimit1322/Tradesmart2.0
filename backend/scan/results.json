@@ -1,98 +1,20 @@
 [
   {
-    "symbol": "ADANIPOWER",
-    "close": 594.55,
-    "ema22": 594.04,
-    "volume": 45502
+    "symbol": "ASTRAZEN",
+    "close": 9012.0,
+    "ema22": 9042.58,
+    "volume": 149586
   },
   {
-    "symbol": "APOLLOHOSP",
-    "close": 7474.5,
-    "ema22": 7421.99,
-    "volume": 4111
+    "symbol": "CHENNPETRO",
+    "close": 700.15,
+    "ema22": 699.77,
+    "volume": 89691
   },
   {
-    "symbol": "CIEINDIA",
-    "close": 446.9,
-    "ema22": 447.5,
-    "volume": 704
-  },
-  {
-    "symbol": "CGCL",
-    "close": 168.64,
-    "ema22": 170.43,
-    "volume": 55033
-  },
-  {
-    "symbol": "EIDPARRY",
-    "close": 1103.8,
-    "ema22": 1104.25,
-    "volume": 0
-  },
-  {
-    "symbol": "ENDURANCE",
-    "close": 2902.1,
-    "ema22": 2878.01,
-    "volume": 0
-  },
-  {
-    "symbol": "IDFCFIRSTB",
-    "close": 74.65,
-    "ema22": 74.35,
-    "volume": 98386
-  },
-  {
-    "symbol": "KSB",
-    "close": 821.5,
-    "ema22": 824.39,
-    "volume": 99
-  },
-  {
-    "symbol": "KPIL",
-    "close": 1216.2,
-    "ema22": 1226.11,
-    "volume": 546
-  },
-  {
-    "symbol": "MAXHEALTH",
-    "close": 1289.0,
-    "ema22": 1288.83,
-    "volume": 726
-  },
-  {
-    "symbol": "NCC",
-    "close": 231.54,
-    "ema22": 230.97,
-    "volume": 8080
-  },
-  {
-    "symbol": "OFSS",
-    "close": 9055.5,
-    "ema22": 9054.4,
-    "volume": 275
-  },
-  {
-    "symbol": "RAYMOND",
-    "close": 750.0,
-    "ema22": 741.35,
-    "volume": 81368
-  },
-  {
-    "symbol": "SCHNEIDER",
-    "close": 837.0,
-    "ema22": 840.88,
-    "volume": 541
-  },
-  {
-    "symbol": "STLTECH",
-    "close": 108.18,
-    "ema22": 107.18,
-    "volume": 32579
-  },
-  {
-    "symbol": "TRENT",
-    "close": 6157.5,
-    "ema22": 6166.46,
-    "volume": 1480
+    "symbol": "ELECON",
+    "close": 651.1,
+    "ema22": 649.35,
+    "volume": 14126
   }
 ]

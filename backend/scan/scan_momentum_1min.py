@@ -7,9 +7,9 @@ symbols = df["SYMBOL"].dropna().unique()
 
 momentum_retest_stocks_1min = []
 
-momentum_length=4
+momentum_length=5
 required_strong_candle=3
-ema_percent=0.0005
+ema_percent=0.005
 
 for symbol in symbols:
     
@@ -37,11 +37,11 @@ for symbol in symbols:
         merged.columns = ["Open", "High", "Close", "EMA9"]
         merged.dropna(inplace=True)
         
-        if len(merged) < 180:
+        if len(merged) < 80:
             continue
         
         found_momentum= False
-        for i in range(-185,-5):
+        for i in range(-85,-5):
             window=merged.iloc[i-momentum_length+1:i+1]
             if len(window)<momentum_length:
                 continue
@@ -60,7 +60,7 @@ for symbol in symbols:
             if strong_candles >=required_strong_candle:
                 found_momentum = True
                
-            print(found_momentum)
+            # print(found_momentum)
             if found_momentum:
                 latest_close=merged["Close"].iloc[-1]
                 latest_ema=merged['EMA9'].iloc[-1]
@@ -93,3 +93,4 @@ print(f"\nScan complete. {len(momentum_retest_stocks_1min)} stock(s) matched the
         
     
 
+# https://github.com/Jimit1322/Tradesmart2.0.git
