@@ -1,20 +1,26 @@
 [
   {
-    "symbol": "ASTRAZEN",
-    "close": 9012.0,
-    "ema22": 9042.58,
-    "volume": 149586
+    "symbol": "AIAENG",
+    "close": 3307.0,
+    "ema22": 3311.37,
+    "volume": 2595
   },
   {
-    "symbol": "CHENNPETRO",
-    "close": 700.15,
-    "ema22": 699.77,
-    "volume": 89691
+    "symbol": "CRISIL",
+    "close": 6041.0,
+    "ema22": 6044.49,
+    "volume": 1379
   },
   {
-    "symbol": "ELECON",
-    "close": 651.1,
-    "ema22": 649.35,
-    "volume": 14126
+    "symbol": "GMMPFAUDLR",
+    "close": 1239.8,
+    "ema22": 1244.07,
+    "volume": 1253
+  },
+  {
+    "symbol": "GODFRYPHLP",
+    "close": 8880.0,
+    "ema22": 8892.54,
+    "volume": 3759
   }
 ]
