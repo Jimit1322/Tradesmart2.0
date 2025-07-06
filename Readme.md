@@ -1,70 +1,79 @@
-<!-- Full-Stack Trading Tool (Python, Node.js, React, Lightweight-Charts)
-
-Developed a real-time stock scanner that identifies NSE-listed equities showing strong momentum followed by a retest near the 22-period EMA using 5-minute interval data.
-
-Implemented backend logic in Python to fetch historical OHLC and volume data via yfinance, apply EMA and price action filters, and serve results through a Node.js Express API.
-
-Designed a dynamic React frontend that visualizes candlestick charts with EMA overlays and toggleable volume histograms using lightweight-charts, with interactive hover insights.
-
-Optimized for live usage by integrating automatic cleanup of temporary data files and CSV export functionality; ensured crosshair-driven candle analytics (OHLC, volume, % change) for trade decision-making. -->
 
 # 📈 TradeSmart 2.0 - Momentum Retest Stock Scanner
 
-**TradeSmart 2.0** is a full-stack stock scanner that identifies **momentum stocks**  which are **retesting their 22 EMA** after a strong move. It combines a Python-based backend for data fetching and analysis with a React frontend for interactive charting.
+**TradeSmart 2.0** is a full-stack stock scanner that identifies **momentum stocks** which are **retesting their EMA (22 or 9)** after a strong move. It uses a Python backend for stock scanning and a React frontend for interactive chart visualization.
 
 ---
 
 ## 🚀 Features
 
-- 📊 Scans for **5-minute candle momentum** in the last few sessions.
-- 🔁 Detects **retest** of 22 EMA after strong bullish momentum.
-- 🔎 Only includes stocks where **last 3 candles** gained **>0.5%** and closed above previous highs.
-- 🧠 Uses **Yahoo Finance API** to fetch real-time OHLC and volume data.
-- 🧾 One-click download of matching stocks as **CSV**.
-- 🧩 Interactive **candlestick + EMA + volume charts** using `lightweight-charts`.
-- 📉 Toggleable **volume bar** and hover-based candle info (OHLC, % change, volume).
-
+- 📊 Scans both **5-minute** and **1-minute** charts for momentum setups.
+- 🔁 Detects **retest** of EMA (22 for 5m, 9 for 1m) after strong bullish momentum.
+- 🧠 Applies filters like:
+  - 3–4 bullish candles out of 5 with >0.3–0.5% gains
+  - Breakout above previous candle highs
+  - Price pullback to EMA
+  - Optional gap-up or rising EMA slope
+- 🧾 CSV export for easy tracking and analysis
+- 📈 Lightweight interactive charts with:
+  - EMA overlays
+  - Toggleable volume bars
+  - Crosshair-based OHLC/volume info
 
 ---
 
 ## 🧠 Strategy Logic
 
-This scanner identifies **stocks in momentum** followed by a **pullback to 22 EMA**, signaling potential Intraday entries.
+### ✅ 5-Min Strategy (scanner_5m.py)
+- Detects momentum in previous 40–60 candles using:
+  - ≥3 bullish candles in a 5-candle window
+  - Each gaining >0.5% and closing above previous high
+- Confirms price is **now near EMA22** or **gapped up + pulled back**
 
-1. **Momentum Detection**
-   - Backtracks 40 to 5 candles from the end.
-   - Looks for any 3-candle segment where **at least 3 candles**:
-     - Are **bullish** (close > open),
-     - Have **>0.5% gain**, and
-     - Close **above previous high**.
+### ✅ 1-Min Strategy (scanner_1m.py)
+- Detects micro-momentum in last 80+ candles:
+  - ≥4 bullish candles in a 5-candle window
+  - Gains >0.3% and price near EMA9
 
-2. **Retest Condition**
-   - The current (latest) candle’s **close is within ±0.5% of the 22 EMA**.
-   - If both conditions are satisfied, the stock is included in the result.
+### ✅ Slope Filter (Optional)
+- Identifies stocks with a **consistently rising EMA** (min % rise over 5+ candles)
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer       | Tech                         |
-|------------|------------------------------|
-| Backend     | Python, `yfinance`, `pandas` |
-| Frontend    | React, `lightweight-charts`  |
-| Server/API  | Node.js, Express.js          |
-| Charting    | Candlesticks, EMA, Volume    |
+| Layer       | Tools & Libraries                              |
+|-------------|------------------------------------------------|
+| Backend     | Python, yfinance, pandas, scipy                |
+| Frontend    | React, Vite, lightweight-charts, Tailwind CSS  |
+| Server/API  | Node.js, Express                               |
+| Data Format | JSON, CSV                                      |
 
 ---
 
-## **Commands To Run on Terminal**
+
+## ⚙️ Commands To Run
 
 ```bash
+# Python packages
 pip install -r scan/requirements.txt
 
-cd backend
+# Node backend
+cd server
 npm install
 node server.js
 
-cd frontend
+# React frontend
+cd client
 npm install
 npm run dev
+```
 
+---
+
+## 👤 Author
+
+**Jimit Sankhesara**  
+📧 jimitsankhesara9@gmail.com  
+🔗 [GitHub](https://github.com/Jimit1322)  
+🔗 [LinkedIn](https://www.linkedin.com/in/jimit-sankhesara)
