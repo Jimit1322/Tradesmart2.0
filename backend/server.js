@@ -28,7 +28,7 @@ function readJSON(filePath, res) {
 
 //  Combined scan route
 app.get('/api/scan', async (req, res) => {
-  const scan5m = exec('python3 scan/scan_momentum.py');
+  const scan5m = exec('python3 scan/scan_momentum_5min.py');
   const scan1m = exec('python3 scan/scan_momentum_1min.py');
 
   let completed = 0;
