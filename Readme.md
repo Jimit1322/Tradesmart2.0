@@ -44,7 +44,7 @@
 
 | Layer       | Tools & Libraries                              |
 |-------------|------------------------------------------------|
-| Backend     | Python, yfinance, pandas, scipy                |
+| Backend     | Python, yfinance, pandas               |
 | Frontend    | React, Vite, lightweight-charts, Tailwind CSS  |
 | Server/API  | Node.js, Express                               |
 | Data Format | JSON, CSV                                      |
