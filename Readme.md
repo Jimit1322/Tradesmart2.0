@@ -76,4 +76,4 @@ npm run dev
 **Jimit Sankhesara**  
 📧 jimitsankhesara9@gmail.com  
 🔗 [GitHub](https://github.com/Jimit1322)  
-🔗 [LinkedIn](https://www.linkedin.com/in/jimit-sankhesara)
+🔗 [LinkedIn](www.linkedin.com/in/jimit-sankhesara-1317a6304)
