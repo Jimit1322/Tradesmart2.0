@@ -24,18 +24,18 @@
 
 ## 🧠 Strategy Logic
 
-### ✅ 5-Min Strategy (scanner_5m.py)
+### ✅ 5-Min Strategy (scan_momentem.py)
 - Detects momentum in previous 40–60 candles using:
   - ≥3 bullish candles in a 5-candle window
   - Each gaining >0.5% and closing above previous high
 - Confirms price is **now near EMA22** or **gapped up + pulled back**
 
-### ✅ 1-Min Strategy (scanner_1m.py)
+### ✅ 1-Min Strategy (scan_momentum_1min.py)
 - Detects micro-momentum in last 80+ candles:
   - ≥4 bullish candles in a 5-candle window
   - Gains >0.3% and price near EMA9
 
-### ✅ Slope Filter (Optional)
+### ✅ Slope Filter 
 - Identifies stocks with a **consistently rising EMA** (min % rise over 5+ candles)
 
 ---
