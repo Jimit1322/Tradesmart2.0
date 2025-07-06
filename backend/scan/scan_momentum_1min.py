@@ -24,7 +24,7 @@ symbols = df["SYMBOL"].dropna().unique()
 
 momentum_retest_stocks_1min = []
 
-momentum_length=5
+momentum_length=7
 required_strong_candle=4
 ema_percent=0.005
 

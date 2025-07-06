@@ -84,3 +84,11 @@ app.get('/api/ohlc/:symbol', (req, res) => {
 app.listen(PORT, () => {
   console.log(` Server running on http://localhost:${PORT}`);
 });
+
+
+
+
+// git remote add upstream https://github.com/Jimit1322/Tradesmart2.0.git
+// git fetch upstream
+// git merge upstream/main
+// git push origin main
