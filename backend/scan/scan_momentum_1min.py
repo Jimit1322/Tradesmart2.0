@@ -1,3 +1,20 @@
+"""
+This script scans NSE-listed stocks from the Nifty 500 using 1-minute interval data over the past 7 days.
+
+It identifies stocks that:
+1. Showed **recent strong bullish momentum**, defined as at least 4 out of the last 5 candles (within a rolling window)
+   where:
+   - The candle closed higher than it opened
+   - The candle's body size was > 0.3%
+   - The close broke above the previous candle's high
+
+2. Are now **trading near their 9-period EMA**, indicating a potential pullback or retest opportunity.
+
+If both conditions are met, the stock is added to the result list with its current close price, EMA value, and volume.
+
+The matched stocks are saved to a JSON file: 'scan/results_1min.json'.
+"""
+
 import yfinance as yf
 import pandas as pd
 import json
@@ -8,7 +25,7 @@ symbols = df["SYMBOL"].dropna().unique()
 momentum_retest_stocks_1min = []
 
 momentum_length=5
-required_strong_candle=3
+required_strong_candle=4
 ema_percent=0.005
 
 for symbol in symbols:
@@ -31,6 +48,7 @@ for symbol in symbols:
         close = pd.Series(data["Close"].values.flatten(), index=data.index)
         high = pd.Series(data["High"].values.flatten(), index=data.index)
         open_ = pd.Series(data["Open"].values.flatten(), index=data.index)
+        volume=data["Volume"]
         ema9 = close.ewm(span=9, adjust=False).mean()
         
         merged=pd.concat([open_,high,close,ema9],axis=1)
@@ -39,6 +57,10 @@ for symbol in symbols:
         
         if len(merged) < 80:
             continue
+        
+        # avg_volume = volume.rolling(window=20).mean().iloc[-1]
+        # if avg_volume< 1000:
+        #     continue
         
         found_momentum= False
         for i in range(-85,-5):

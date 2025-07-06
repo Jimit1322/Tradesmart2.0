@@ -1,26 +1,68 @@
 [
   {
-    "symbol": "AIAENG",
-    "close": 3307.0,
-    "ema22": 3311.37,
-    "volume": 2595
+    "symbol": "ACI",
+    "close": 636.35,
+    "ema22": 638.7,
+    "volume": 0
   },
   {
-    "symbol": "CRISIL",
-    "close": 6041.0,
-    "ema22": 6044.49,
-    "volume": 1379
+    "symbol": "BEML",
+    "close": 4527.0,
+    "ema22": 4532.53,
+    "volume": 21178
   },
   {
-    "symbol": "GMMPFAUDLR",
-    "close": 1239.8,
-    "ema22": 1244.07,
-    "volume": 1253
+    "symbol": "CSBBANK",
+    "close": 410.95,
+    "ema22": 411.92,
+    "volume": 24395
   },
   {
-    "symbol": "GODFRYPHLP",
-    "close": 8880.0,
-    "ema22": 8892.54,
-    "volume": 3759
+    "symbol": "JKPAPER",
+    "close": 402.0,
+    "ema22": 402.29,
+    "volume": 112070
+  },
+  {
+    "symbol": "KARURVYSYA",
+    "close": 270.75,
+    "ema22": 271.46,
+    "volume": 81628
+  },
+  {
+    "symbol": "MGL",
+    "close": 1541.6,
+    "ema22": 1544.8,
+    "volume": 15635
+  },
+  {
+    "symbol": "MRPL",
+    "close": 150.5,
+    "ema22": 150.95,
+    "volume": 247357
+  },
+  {
+    "symbol": "MARICO",
+    "close": 728.6,
+    "ema22": 728.37,
+    "volume": 63326
+  },
+  {
+    "symbol": "RAINBOW",
+    "close": 1599.4,
+    "ema22": 1603.96,
+    "volume": 0
+  },
+  {
+    "symbol": "MANYAVAR",
+    "close": 827.4,
+    "ema22": 828.98,
+    "volume": 20000
+  },
+  {
+    "symbol": "ZEEL",
+    "close": 147.38,
+    "ema22": 147.02,
+    "volume": 0
   }
 ]

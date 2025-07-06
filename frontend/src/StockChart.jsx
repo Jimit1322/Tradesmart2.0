@@ -1,6 +1,45 @@
 /*
-Creates the chart with proper designing and functionality 
+  StockChart.jsx
+
+   Purpose:
+  A reusable React component that renders a lightweight candlestick chart for a given stock symbol 
+  using data served from a local API (`/api/ohlc/:symbol?tf=5m/1m`).
+
+   Key Features:
+  - Displays candlestick chart with optional volume histogram
+  - Dynamically overlays 9 EMA (for 1-min) or 22 EMA (for 5-min) based on the `tf` prop
+  - Hover/crosshair tooltips display OHLC, volume, and % change with time
+  - Interactive toggle to show/hide volume histogram
+
+   Props:
+  - `symbol` (string): Stock symbol (e.g., "RELIANCE", "INFY")
+  - `tf` (string): Timeframe, "1m" for intraday scalping, or "5m" for short-term momentum
+
+   Tech Stack:
+  - React + Hooks (useState, useEffect, useRef)
+  - [lightweight-charts](https://tradingview.github.io/lightweight-charts/) library
+  - Custom volume coloring and EMA overlay
+  - Crosshair tooltip with real-time formatted data
+
+  Expected JSON data format from backend:
+  [
+    {
+      time: 1720252800,
+      open: 2723.0,
+      high: 2731.5,
+      low: 2719.8,
+      close: 2730.1,
+      ema22: 2725.43, // or ema9 if interval is 1m
+      volume: 38420
+    },
+    ...
+  ]
+
+   Use Case:
+  Ideal for visualizing stock trading strategies such as momentum breakouts, EMA retests, 
+  or gap-up setups in a technical analysis dashboard.
 */
+
 
 import React, { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";

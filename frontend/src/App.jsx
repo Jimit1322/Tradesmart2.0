@@ -1,3 +1,33 @@
+/*
+   Overview:
+  This is the main component for the Stock Strategy Visualizer web app. It displays two dynamic tables of
+  momentum stocks based on 1-minute and 5-minute strategies. Users can interactively view candlestick charts 
+  with EMA overlays for any stock, as well as download CSV reports.
+
+   What It Does:
+  - Fetches scanned momentum stock lists from a backend API (`/api/scan`)
+  - Separately handles:
+    ▸ 5-min chart setup: strategy using EMA22 (for medium-term momentum)
+    ▸ 1-min chart setup: strategy using EMA9 (for intraday scalping)
+  - Displays two stock tables with:
+    ▸ Symbol, Close Price, EMA value, Volume
+    ▸ A "View" button to render lightweight candlestick charts
+  - Each row expands to show a `StockChart` component when "View" is clicked
+  - Provides a "Download CSV" option for exporting stock lists
+
+   Use Case:
+  This component is ideal for:
+  - Viewing which stocks meet a specific momentum + EMA retest strategy
+  - Quickly checking stock structure and volume behavior
+  - Exporting trade setups for further analysis
+
+   Notes:
+  - Timeframes are synced to the chart component via the `tf` prop
+  - Chart data is fetched via `/api/ohlc/:symbol?tf=5m|1m` for each selected row
+  - Fully responsive and designed with Tailwind-inspired inline styles
+*/
+
+
 import React, { useEffect, useState } from "react";
 import StockChart from "./StockChart.jsx";
 import Navbar from "./components/Navbar.jsx";

@@ -1,3 +1,39 @@
+"""
+fetch_ohlc.py
+
+This script fetches historical intraday OHLC data for a given NSE stock symbol using the yfinance API and saves it as a JSON file.
+
+It supports both 5-minute and 1-minute intervals and automatically calculates the appropriate EMA:
+- **EMA22** for 5-minute interval
+- **EMA9** for 1-minute interval
+
+ How it works:
+1. Takes the stock symbol (without ".NS") and optional interval ("5m" or "1m") from command line arguments.
+2. Downloads the past 7 days of data from Yahoo Finance.
+3. Calculates the selected EMA on the "Close" price.
+4. Converts the data into a list of dictionaries (time, open, high, low, close, ema, volume).
+5. Saves the result as a JSON file to `scan/data/{SYMBOL}_{INTERVAL}.json`.
+
+ Usage:
+    python fetch_ohlc.py RELIANCE 5m
+    python fetch_ohlc.py INFY 1m
+
+ Output Example:
+[
+  {
+    "time": 1720252800,
+    "open": 2723.0,
+    "high": 2731.5,
+    "low": 2719.8,
+    "close": 2730.1,
+    "ema22": 2725.43,
+    "volume": 38420
+  },
+  ...
+]
+"""
+
+
 import yfinance as yf
 import pandas as pd
 import sys
