@@ -1,94 +1,158 @@
+/**
+ * Express Server for TradeSmart 2.0
+ * - /api/scan        → fresh 5m, 1m, daily scans
+ * - /api/ohlc/:symbol?tf=... → live OHLC + EMA chart data
+ */
+
 import express, { json } from 'express';
 import { exec } from 'child_process';
 import fs from 'fs';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
-app.use(json());
 const PORT = 4000;
 
-// Utility to read and parse JSON file
-function readJSON(filePath, res) {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(` File Read Error: ${filePath}`, err.message);
-      return res.status(500).json({ error: 'Could not read JSON file.' });
-    }
+app.use(cors());
+app.use(json());
 
-    try {
-      const jsonData = JSON.parse(data);
-      res.json(jsonData);
-    } catch (parseErr) {
-      console.error(` JSON Parse Error in file: ${filePath}`, parseErr.message);
-      return res.status(500).json({ error: 'Invalid JSON format.' });
-    }
-  });
+// --- Helper to safely read JSON ---
+function readJSONSync(filePath) {
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error(`❌ Failed to read ${filePath}:`, err.message);
+    return [];
+  }
 }
 
-//  Combined scan route
-app.get('/api/scan', async (req, res) => {
-  const scan5m = exec('python3 scan/scan_momentum_5min.py');
-  const scan1m = exec('python3 scan/scan_momentum_1min.py');
+// --- /api/scan → Runs 5m, 1m, daily scan scripts ---
+// app.get('/api/scan', async (req, res) => {
+//   console.log("🔁 Starting fresh scan for 5m, 1m, daily...");
+
+//   let completed = 0;
+//   const results = {};
+
+//   const checkAndRespond = () => {
+//     if (completed === 3) {
+//       console.log("✅ All scans completed. Responding...");
+//       res.json(results);
+//     }
+//   };
+
+//   const runScript = (label, script, outputFile) => {
+//     const process = exec(`python3 ${script}`, { cwd: 'scan' });
+
+//     process.on('close', () => {
+//       const data = readJSONSync(`scan/${outputFile}`);
+//       results[label] = data;
+//       console.log(`✅ ${label} → ${data.length} stock(s)`);
+//       completed++;
+//       checkAndRespond();
+//     });
+
+//     process.on('error', (err) => {
+//       console.error(`❌ ${label} failed:`, err.message);
+//       results[label] = [];
+//       completed++;
+//       checkAndRespond();
+//     });
+//   };
+
+//   runScript('5m', 'scan_momentum_5min.py', 'results.json');
+//   runScript('1m', 'scan_momentum_1min.py', 'results_1min.json');
+//   runScript('daily', 'scan_44ema_daily.py', 'results_44_daily.json');
+// });
+// --- /api/scan/intraday → 5m + 1m scans only ---
+app.get('/api/scan/intraday', (req, res) => {
+  console.log("🔁 Starting intraday scan (5m + 1m)");
 
   let completed = 0;
   const results = {};
 
   const checkAndRespond = () => {
     if (completed === 2) {
+      console.log("✅ Intraday scan done.");
       res.json(results);
     }
   };
 
-  scan5m.on('close', (code) => {
-    try {
-      const data = fs.readFileSync('./scan/results.json', 'utf8');
-      results['5m'] = JSON.parse(data);
-    } catch (e) {
-      console.error(" Failed to read 5min results:", e.message);
-      results['5m'] = [];
-    }
-    completed++;
-    checkAndRespond();
-  });
+  const runScript = (label, script, outputFile) => {
+    const process = exec(`python3 ${script}`, { cwd: 'scan' });
 
-  scan1m.on('close', (code) => {
+    process.on('close', () => {
+      const path = `scan/${outputFile}`;
+      try {
+        const raw = fs.readFileSync(path, 'utf8');
+        results[label] = JSON.parse(raw);
+        console.log(`✅ ${label} → ${results[label].length} stocks`);
+      } catch (err) {
+        console.error(`❌ Failed to read ${label}:`, err.message);
+        results[label] = [];
+      }
+      completed++;
+      checkAndRespond();
+    });
+  };
+
+  runScript('5m', 'scan_momentum_5min.py', 'results.json');
+  runScript('1m', 'scan_momentum_1min.py', 'results_1min.json');
+});
+
+
+// --- /api/scan/daily → Daily 44 EMA scan only ---
+app.get('/api/scan/daily', (req, res) => {
+  console.log("🔁 Starting daily scan (44 EMA)");
+
+  const process = exec('python3 scan_44ema_daily.py', { cwd: 'scan' });
+
+  process.on('close', () => {
+    const path = 'scan/results_44_daily.json';
     try {
-      const data = fs.readFileSync('./scan/results_1min.json', 'utf8');
-      results['1m'] = JSON.parse(data);
-    } catch (e) {
-      console.error(" Failed to read 1min results:", e.message);
-      results['1m'] = [];
+      const raw = fs.readFileSync(path, 'utf8');
+      const data = JSON.parse(raw);
+      console.log(`✅ daily → ${data.length} stocks`);
+      res.json({ daily: data });
+    } catch (err) {
+      console.error("❌ Failed to read daily results:", err.message);
+      res.json({ daily: [] });
     }
-    completed++;
-    checkAndRespond();
   });
 });
 
-// OHLC fetch endpoint with ?tf=1m/5m
+
+// --- /api/ohlc/:symbol?tf=... → Fetch OHLC + EMA data dynamically ---
 app.get('/api/ohlc/:symbol', (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
   const tf = req.query.tf || '5m';
-  const jsonPath = `scan/data/${symbol}_${tf}.json`;
+  const filePath = `scan/data/${symbol}_${tf}.json`;
 
-  exec(`python3 scan/fetch_ohlc.py ${symbol} ${tf}`, (err, stdout, stderr) => {
-    if (err || stderr) {
-      console.error(`Error executing fetch_ohlc.py for ${symbol} ${tf}:`, stderr || err.message);
-      return res.status(500).json({ error: `Failed to fetch OHLC for ${symbol}` });
-    }
+  const process = exec(`python3 fetch_ohlc.py ${symbol} ${tf}`, { cwd: 'scan' });
 
-    readJSON(jsonPath, res);
+  process.on('close', () => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(`❌ Could not read ${filePath}:`, err.message);
+        return res.status(404).json({ error: `No chart data for ${symbol} (${tf})` });
+      }
+
+      try {
+        const json = JSON.parse(data);
+        res.json(json);
+      } catch (parseErr) {
+        console.error(`❌ JSON Parse error:`, parseErr.message);
+        res.status(500).json({ error: 'Invalid JSON format' });
+      }
+    });
+  });
+
+  process.on('error', (err) => {
+    console.error(`❌ fetch_ohlc.py failed for ${symbol} (${tf}):`, err.message);
+    res.status(500).json({ error: 'Chart data fetch failed' });
   });
 });
 
+// --- Start server ---
 app.listen(PORT, () => {
-  console.log(` Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
-
-
-
-
-// git remote add upstream https://github.com/Jimit1322/Tradesmart2.0.git
-// git fetch upstream
-// git merge upstream/main
-// git push origin main

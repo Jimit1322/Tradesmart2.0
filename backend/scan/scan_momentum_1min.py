@@ -19,7 +19,7 @@ import yfinance as yf
 import pandas as pd
 import json
 
-df=pd.read_csv("scan/Nifty 500.csv")
+df=pd.read_csv("Nifty 500.csv")
 symbols = df["SYMBOL"].dropna().unique()
 
 momentum_retest_stocks_1min = []
@@ -36,7 +36,7 @@ for symbol in symbols:
         data=yf.download(
             tickers=symbol_yf,
             interval="1m",
-            period="7d",
+            period="8d",
             auto_adjust=False,
             progress=False
         )
@@ -104,7 +104,7 @@ for symbol in symbols:
         print(f"Error with {symbol_yf}: {e}")
         
         
-with open("scan/results_1min.json", "w") as f:
+with open("results_1min.json", "w") as f:
     json.dump(momentum_retest_stocks_1min, f, indent=2)
     
 print(f"\nScan complete. {len(momentum_retest_stocks_1min)} stock(s) matched the strategy.\n")

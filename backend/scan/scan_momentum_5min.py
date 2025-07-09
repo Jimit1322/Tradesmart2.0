@@ -1,5 +1,5 @@
 '''
-This script scans NSE-listed stocks from the Nifty 500 to identify potential trade setups based on three technical conditions:
+This script scans NSE-listed stocks from the Nifty 500/Nifty50/Equity to identify potential trade setups based on three technical conditions:
 
 1.Previous Momentum: It detects stocks that exhibited strong bullish momentum in the recent past (based on 5-minute candles), characterized by at least 3 strong bullish candles within a 5-candle window.
 
@@ -18,7 +18,7 @@ import json
 # from scipy.stats import linregress
 
 # Read stock symbols from CSV file
-df = pd.read_csv("scan/Nifty 500.csv")
+df = pd.read_csv("Nifty 500.csv")
 symbols = df["SYMBOL"].dropna().unique()
 
 momentum_retest_stocks = []
@@ -36,7 +36,7 @@ for symbol in symbols:
         data = yf.download(
             tickers=symbol_yf,
             interval="5m",
-            period="15d",
+            period="60d",
             auto_adjust=False,
             progress=False
         )
@@ -168,7 +168,7 @@ for symbol in symbols:
         print(f"Error with {symbol_yf}: {e}")
 
 # Save results to JSON
-with open("scan/results.json", "w") as f:
+with open("results.json", "w") as f:
     json.dump(momentum_retest_stocks, f, indent=2)
 
 print(f"\n Scan complete. {len(momentum_retest_stocks)} stock(s) matched the strategy.\n")

@@ -1,68 +1,122 @@
 [
   {
     "symbol": "ACI",
-    "close": 636.35,
-    "ema22": 638.7,
-    "volume": 0
+    "close": 670.25,
+    "ema22": 668.86,
+    "volume": 9939
   },
   {
-    "symbol": "BEML",
-    "close": 4527.0,
-    "ema22": 4532.53,
-    "volume": 21178
+    "symbol": "BHEL",
+    "close": 261.95,
+    "ema22": 262.22,
+    "volume": 351582
   },
   {
-    "symbol": "CSBBANK",
-    "close": 410.95,
-    "ema22": 411.92,
-    "volume": 24395
+    "symbol": "CUB",
+    "close": 218.38,
+    "ema22": 217.69,
+    "volume": 88206
   },
   {
-    "symbol": "JKPAPER",
-    "close": 402.0,
-    "ema22": 402.29,
-    "volume": 112070
+    "symbol": "GODFRYPHLP",
+    "close": 8510.0,
+    "ema22": 8475.61,
+    "volume": 5073
   },
   {
-    "symbol": "KARURVYSYA",
-    "close": 270.75,
-    "ema22": 271.46,
-    "volume": 81628
+    "symbol": "HSCL",
+    "close": 509.95,
+    "ema22": 511.12,
+    "volume": 46044
   },
   {
-    "symbol": "MGL",
-    "close": 1541.6,
-    "ema22": 1544.8,
-    "volume": 15635
+    "symbol": "HINDCOPPER",
+    "close": 264.55,
+    "ema22": 263.84,
+    "volume": 157333
   },
   {
-    "symbol": "MRPL",
-    "close": 150.5,
-    "ema22": 150.95,
-    "volume": 247357
+    "symbol": "SAMMAANCAP",
+    "close": 127.81,
+    "ema22": 127.47,
+    "volume": 1993701
   },
   {
-    "symbol": "MARICO",
-    "close": 728.6,
-    "ema22": 728.37,
-    "volume": 63326
+    "symbol": "IEX",
+    "close": 207.96,
+    "ema22": 208.09,
+    "volume": 361825
   },
   {
-    "symbol": "RAINBOW",
-    "close": 1599.4,
-    "ema22": 1603.96,
-    "volume": 0
+    "symbol": "MRF",
+    "close": 150715.0,
+    "ema22": 150190.66,
+    "volume": 778
   },
   {
-    "symbol": "MANYAVAR",
-    "close": 827.4,
-    "ema22": 828.98,
-    "volume": 20000
+    "symbol": "MANKIND",
+    "close": 2525.0,
+    "ema22": 2527.17,
+    "volume": 33136
   },
   {
-    "symbol": "ZEEL",
-    "close": 147.38,
-    "ema22": 147.02,
-    "volume": 0
+    "symbol": "NATCOPHARM",
+    "close": 1017.5,
+    "ema22": 1018.78,
+    "volume": 41455
+  },
+  {
+    "symbol": "PCBL",
+    "close": 422.95,
+    "ema22": 424.69,
+    "volume": 45365
+  },
+  {
+    "symbol": "SWSOLAR",
+    "close": 330.25,
+    "ema22": 329.21,
+    "volume": 194384
+  },
+  {
+    "symbol": "SUNTV",
+    "close": 568.75,
+    "ema22": 569.78,
+    "volume": 22081
+  },
+  {
+    "symbol": "SWANENERGY",
+    "close": 462.7,
+    "ema22": 461.08,
+    "volume": 105756
+  },
+  {
+    "symbol": "SYRMA",
+    "close": 651.9,
+    "ema22": 644.79,
+    "volume": 103803
+  },
+  {
+    "symbol": "VIPIND",
+    "close": 437.8,
+    "ema22": 438.37,
+    "volume": 42996
+  },
+  {
+    "symbol": "VTL",
+    "close": 502.9,
+    "ema22": 503.44,
+    "volume": 12482
+  },
+  {
+    "symbol": "VIJAYA",
+    "close": 1018.95,
+    "ema22": 1021.24,
+    "volume": 2544
+  },
+  {
+    "symbol": "WESTLIFE",
+    "close": 807.85,
+    "ema22": 807.22,
+    "volume": 113415
   }
 ]

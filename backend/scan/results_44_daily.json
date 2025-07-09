@@ -1,0 +1,248 @@
+[
+  {
+    "symbol": "ABB",
+    "close": 5898.0,
+    "ema44": 5881.5,
+    "volume": 204867
+  },
+  {
+    "symbol": "ADANIGREEN",
+    "close": 995.2,
+    "ema44": 986.4,
+    "volume": 1479269
+  },
+  {
+    "symbol": "AWL",
+    "close": 262.75,
+    "ema44": 262.51,
+    "volume": 1849337
+  },
+  {
+    "symbol": "AETHER",
+    "close": 780.85,
+    "ema44": 778.74,
+    "volume": 71947
+  },
+  {
+    "symbol": "DMART",
+    "close": 4190.9,
+    "ema44": 4185.99,
+    "volume": 234702
+  },
+  {
+    "symbol": "BANKBARODA",
+    "close": 241.13,
+    "ema44": 239.98,
+    "volume": 5925998
+  },
+  {
+    "symbol": "BHARATFORG",
+    "close": 1261.5,
+    "ema44": 1261.4,
+    "volume": 755432
+  },
+  {
+    "symbol": "BIKAJI",
+    "close": 734.7,
+    "ema44": 729.69,
+    "volume": 118328
+  },
+  {
+    "symbol": "BBTC",
+    "close": 1946.9,
+    "ema44": 1944.59,
+    "volume": 41224
+  },
+  {
+    "symbol": "CGPOWER",
+    "close": 672.05,
+    "ema44": 671.2,
+    "volume": 2187919
+  },
+  {
+    "symbol": "CGCL",
+    "close": 168.08,
+    "ema44": 166.91,
+    "volume": 3702534
+  },
+  {
+    "symbol": "COROMANDEL",
+    "close": 2302.4,
+    "ema44": 2291.25,
+    "volume": 637085
+  },
+  {
+    "symbol": "DEEPAKNTR",
+    "close": 1980.7,
+    "ema44": 1972.13,
+    "volume": 101484
+  },
+  {
+    "symbol": "DEVYANI",
+    "close": 171.04,
+    "ema44": 170.52,
+    "volume": 1204216
+  },
+  {
+    "symbol": "FIVESTAR",
+    "close": 746.15,
+    "ema44": 741.6,
+    "volume": 595482
+  },
+  {
+    "symbol": "GRINDWELL",
+    "close": 1736.2,
+    "ema44": 1730.96,
+    "volume": 18331
+  },
+  {
+    "symbol": "HAPPSTMNDS",
+    "close": 631.45,
+    "ema44": 625.81,
+    "volume": 199004
+  },
+  {
+    "symbol": "HAPPYFORGE",
+    "close": 936.1,
+    "ema44": 928.07,
+    "volume": 24705
+  },
+  {
+    "symbol": "ICICIBANK",
+    "close": 1431.9,
+    "ema44": 1423.76,
+    "volume": 8826931
+  },
+  {
+    "symbol": "IRCON",
+    "close": 194.27,
+    "ema44": 193.35,
+    "volume": 3011974
+  },
+  {
+    "symbol": "SAMMAANCAP",
+    "close": 127.9,
+    "ema44": 127.25,
+    "volume": 83498906
+  },
+  {
+    "symbol": "IRFC",
+    "close": 137.59,
+    "ema44": 137.35,
+    "volume": 5694205
+  },
+  {
+    "symbol": "INOXWIND",
+    "close": 176.83,
+    "ema44": 175.76,
+    "volume": 2993767
+  },
+  {
+    "symbol": "KANSAINER",
+    "close": 250.35,
+    "ema44": 249.28,
+    "volume": 278201
+  },
+  {
+    "symbol": "LICHSGFIN",
+    "close": 604.15,
+    "ema44": 601.99,
+    "volume": 1196723
+  },
+  {
+    "symbol": "LT",
+    "close": 3579.7,
+    "ema44": 3578.5,
+    "volume": 1007566
+  },
+  {
+    "symbol": "OBEROIRLTY",
+    "close": 1831.1,
+    "ema44": 1828.32,
+    "volume": 542909
+  },
+  {
+    "symbol": "OLECTRA",
+    "close": 1203.8,
+    "ema44": 1200.91,
+    "volume": 184818
+  },
+  {
+    "symbol": "OFSS",
+    "close": 8938.5,
+    "ema44": 8908.88,
+    "volume": 60565
+  },
+  {
+    "symbol": "PETRONET",
+    "close": 305.6,
+    "ema44": 304.05,
+    "volume": 3107991
+  },
+  {
+    "symbol": "PIDILITIND",
+    "close": 3048.3,
+    "ema44": 3026.08,
+    "volume": 346923
+  },
+  {
+    "symbol": "SBICARD",
+    "close": 934.5,
+    "ema44": 933.81,
+    "volume": 966426
+  },
+  {
+    "symbol": "STARHEALTH",
+    "close": 432.15,
+    "ema44": 428.69,
+    "volume": 704626
+  },
+  {
+    "symbol": "SUNDARMFIN",
+    "close": 5031.0,
+    "ema44": 5028.39,
+    "volume": 66599
+  },
+  {
+    "symbol": "SUPREMEIND",
+    "close": 4194.7,
+    "ema44": 4172.83,
+    "volume": 130985
+  },
+  {
+    "symbol": "TATAINVEST",
+    "close": 6641.0,
+    "ema44": 6597.5,
+    "volume": 21259
+  },
+  {
+    "symbol": "TATAMOTORS",
+    "close": 692.8,
+    "ema44": 691.11,
+    "volume": 5475943
+  },
+  {
+    "symbol": "UNIONBANK",
+    "close": 144.59,
+    "ema44": 143.93,
+    "volume": 30344834
+  },
+  {
+    "symbol": "MANYAVAR",
+    "close": 803.7,
+    "ema44": 796.46,
+    "volume": 72082
+  },
+  {
+    "symbol": "ZFCVINDIA",
+    "close": 13172.0,
+    "ema44": 13148.8,
+    "volume": 8486
+  },
+  {
+    "symbol": "ECLERX",
+    "close": 3372.0,
+    "ema44": 3343.55,
+    "volume": 34720
+  }
+]

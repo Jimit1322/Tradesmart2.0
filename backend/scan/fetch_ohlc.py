@@ -40,7 +40,6 @@ import sys
 import json
 import os
 
-
 if len(sys.argv) < 2:
     print("Error: No stock symbol provided. Usage: python fetch_ohlc.py SYMBOL [INTERVAL]")
     sys.exit(1)
@@ -49,13 +48,26 @@ symbol_raw = sys.argv[1].strip().upper()
 symbol = symbol_raw + ".NS"
 interval = sys.argv[2] if len(sys.argv) > 2 else '5m'
 
-
-ema_col = "EMA22" if interval == "5m" else "EMA9"
-ema_span = 22 if interval == "5m" else 9
-
+# Choose EMA logic based on timeframe
+if interval == "5m":
+    period="60d"
+    ema_col = "EMA22"
+    ema_span = 22
+elif interval == "1m":
+    period="8d"
+    ema_col = "EMA9"
+    ema_span = 9
+elif interval == "1d":
+    period="max"
+    ema_col = "EMA44"
+    ema_span = 44
+else:
+    period="60d"
+    ema_col = "EMA"
+    ema_span = 20
 
 try:
-    data = yf.download(symbol, interval=interval, period="7d", auto_adjust=False, progress=False)
+    data = yf.download(symbol, interval=interval, period=period, auto_adjust=False, progress=False)
 except Exception as e:
     print(f"Error fetching data for {symbol}: {e}")
     sys.exit(1)
@@ -64,7 +76,7 @@ if data.empty:
     print(f"No data returned for {symbol}.")
     sys.exit(1)
 
-# Flatten multilevel columns if needed
+# Flatten multi-index columns if needed
 if isinstance(data.columns, pd.MultiIndex):
     if symbol in data.columns.levels[1]:
         data = data.xs(symbol, axis=1, level=1)
@@ -73,22 +85,30 @@ if isinstance(data.columns, pd.MultiIndex):
         sys.exit(1)
 
 data = data.reset_index()
-data[ema_col] = data["Close"].ewm(span=ema_span, adjust=False).mean()
+data["EMA9"] = data["Close"].ewm(span=9, adjust=False).mean()
+data["EMA22"] = data["Close"].ewm(span=22, adjust=False).mean()
+data["EMA44"] = data["Close"].ewm(span=44, adjust=False).mean()
+# data[ema_col] = data["Close"].ewm(span=ema_span, adjust=False).mean()
 
 ohlc = []
 for _, row in data.iterrows():
-    timestamp = int(pd.to_datetime(row.iloc[0]).timestamp())  # assumes first column is datetime
+    timestamp = int(pd.to_datetime(row.iloc[0]).timestamp())
     ohlc.append({
         "time": timestamp,
         "open": round(float(row["Open"]), 2),
         "high": round(float(row["High"]), 2),
         "low": round(float(row["Low"]), 2),
         "close": round(float(row["Close"]), 2),
-        ema_col.lower(): round(float(row[ema_col]), 2) if pd.notna(row[ema_col]) else None,
+       "ema9": round(float(row["EMA9"]), 2) if pd.notna(row["EMA9"]) else None,
+    "ema22": round(float(row["EMA22"]), 2) if pd.notna(row["EMA22"]) else None,
+    "ema44": round(float(row["EMA44"]), 2) if pd.notna(row["EMA44"]) else None,
         "volume": int(row["Volume"]) if not pd.isna(row["Volume"]) else 0
     })
 
-# Save to appropriate file
-os.makedirs("scan/data", exist_ok=True)
-with open(f"scan/data/{symbol_raw}_{interval}.json", "w") as f:
-    json.dump(ohlc, f,indent=2)
+# Save file
+os.makedirs("data", exist_ok=True)
+output_path = f"data/{symbol_raw}_{interval}.json"
+with open(output_path, "w") as f:
+    json.dump(ohlc, f, indent=2)
+
+print(f"✅ Data saved: {output_path}")
