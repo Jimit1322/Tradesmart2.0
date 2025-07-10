@@ -8,6 +8,7 @@ import express, { json } from 'express';
 import { exec } from 'child_process';
 import fs from 'fs';
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 const PORT = 4000;
@@ -102,14 +103,36 @@ app.get('/api/scan/intraday', (req, res) => {
 
 // --- /api/scan/daily → Daily 44 EMA scan only ---
 app.get('/api/scan/daily', (req, res) => {
-  console.log("🔁 Starting daily scan (44 EMA)");
+  const resultPath = path.join('scan', 'results_44_daily.json');
 
+  // Check if the results file exists and is from today
+  try {
+    const stats = fs.statSync(resultPath);
+    const lastModified = new Date(stats.mtime);
+    const today = new Date();
+
+    const isToday =
+      lastModified.getFullYear() === today.getFullYear() &&
+      lastModified.getMonth() === today.getMonth() &&
+      lastModified.getDate() === today.getDate();
+
+    if (isToday) {
+      console.log("📦 Serving cached daily scan result");
+      const raw = fs.readFileSync(resultPath, 'utf8');
+      const data = JSON.parse(raw);
+      return res.json({ daily: data });
+    }
+  } catch (err) {
+    console.log("⚠️ No daily scan result found or invalid, will generate fresh.");
+  }
+
+  // If not cached for today, run the Python script
+  console.log("🔁 Running fresh daily scan (44 EMA)");
   const process = exec('python3 scan_44ema_daily.py', { cwd: 'scan' });
 
   process.on('close', () => {
-    const path = 'scan/results_44_daily.json';
     try {
-      const raw = fs.readFileSync(path, 'utf8');
+      const raw = fs.readFileSync(resultPath, 'utf8');
       const data = JSON.parse(raw);
       console.log(`✅ daily → ${data.length} stocks`);
       res.json({ daily: data });
@@ -118,8 +141,12 @@ app.get('/api/scan/daily', (req, res) => {
       res.json({ daily: [] });
     }
   });
-});
 
+  process.on('error', (err) => {
+    console.error("❌ Error running daily scan script:", err.message);
+    res.status(500).json({ error: "Failed to execute daily scan" });
+  });
+});
 
 // --- /api/ohlc/:symbol?tf=... → Fetch OHLC + EMA data dynamically ---
 app.get('/api/ohlc/:symbol', (req, res) => {

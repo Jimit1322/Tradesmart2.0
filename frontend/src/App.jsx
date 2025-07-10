@@ -8,7 +8,8 @@ const App = () => {
   const [data1m, setData1m] = useState([]);
   const [dataDaily, setDataDaily] = useState([]);
   const [selectedChart, setSelectedChart] = useState({ symbol: null, tf: null });
-  const [loading, setLoading] = useState(true);
+  const [loadingIntraday, setLoadingIntraday] = useState(true);
+  const [loadingDaily, setLoadingDaily] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,7 +25,7 @@ const App = () => {
         console.error("\u274C Intraday fetch error:", err.message);
         setError("Failed to fetch intraday data.");
       } finally {
-        setLoading(false);
+       setLoadingIntraday(false)
       }
     };
 
@@ -36,6 +37,8 @@ const App = () => {
         setDataDaily(daily["daily"] || []);
       } catch (err) {
         console.error("\u274C Daily fetch error:", err.message);
+      } finally{
+        setLoadingDaily(false)
       }
     };
 
@@ -177,18 +180,38 @@ const App = () => {
     <>
       <Navbar onSearch={setSearchQuery} />
       <div style={{ padding: 20, backgroundColor: "#0e1116", minHeight: "100vh" }}>
-        {loading && <p style={{ textAlign: "center", color: "#aaa" }}>Loading data...</p>}
         {error && <p style={{ color: "#ef5350", textAlign: "center" }}>{error}</p>}
-        {!loading && !error && (
+  
+        {loadingIntraday ? (
+          <p style={{ textAlign: "center", color: "#aaa" }}>Loading 5-min & 1-min data...</p>
+        ) : (
           <>
-            {renderTable(data5m.filter((s) => s.symbol.includes(searchQuery)), "5-min", "EMA22")}
-            {renderTable(data1m.filter((s) => s.symbol.includes(searchQuery)), "1-min", "EMA9")}
-            {renderTable(dataDaily.filter((s) => s.symbol.includes(searchQuery)), "Daily", "EMA44")}
+            {renderTable(
+              data5m.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
+              "5-min",
+              "EMA22"
+            )}
+            {renderTable(
+              data1m.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
+              "1-min",
+              "EMA9"
+            )}
           </>
+        )}
+  
+        {loadingDaily ? (
+          <p style={{ textAlign: "center", color: "#aaa" }}>Loading Daily EMA44 data...</p>
+        ) : (
+          renderTable(
+            dataDaily.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
+            "Daily",
+            "EMA44"
+          )
         )}
       </div>
     </>
   );
+  
 };
 
 const thStyle = {
