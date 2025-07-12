@@ -1,7 +1,7 @@
-// App.jsx
 import React, { useEffect, useState } from "react";
 import StockChart from "./StockChart.jsx";
 import Navbar from "./components/Navbar.jsx";
+import { thStyle, tdStyle, downloadCSV } from "./helpers/stockUtils.js";
 
 const App = () => {
   const [data5m, setData5m] = useState([]);
@@ -22,10 +22,10 @@ const App = () => {
         setData5m(intraday["5m"] || []);
         setData1m(intraday["1m"] || []);
       } catch (err) {
-        console.error("\u274C Intraday fetch error:", err.message);
+        console.error("❌ Intraday fetch error:", err.message);
         setError("Failed to fetch intraday data.");
       } finally {
-       setLoadingIntraday(false)
+        setLoadingIntraday(false);
       }
     };
 
@@ -36,29 +36,15 @@ const App = () => {
         const daily = await res.json();
         setDataDaily(daily["daily"] || []);
       } catch (err) {
-        console.error("\u274C Daily fetch error:", err.message);
-      } finally{
-        setLoadingDaily(false)
+        console.error("❌ Daily fetch error:", err.message);
+      } finally {
+        setLoadingDaily(false);
       }
     };
 
     fetchIntraday();
     fetchDaily();
   }, []);
-
-  const downloadCSV = (stocks, label) => {
-    const csv = ["Symbol,Close,EMA,Volume"];
-    stocks.forEach((s) => {
-      const ema = s.ema22 || s.ema9 || s.ema44 || "";
-      csv.push(`${s.symbol},${s.close},${ema},${s.volume}`);
-    });
-    const blob = new Blob([csv.join("\n")], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `momentum_${label}.csv`;
-    a.click();
-  };
 
   const renderTable = (stocks, label, emaLabel) => (
     <>
@@ -181,7 +167,7 @@ const App = () => {
       <Navbar onSearch={setSearchQuery} />
       <div style={{ padding: 20, backgroundColor: "#0e1116", minHeight: "100vh" }}>
         {error && <p style={{ color: "#ef5350", textAlign: "center" }}>{error}</p>}
-  
+
         {loadingIntraday ? (
           <p style={{ textAlign: "center", color: "#aaa" }}>Loading 5-min & 1-min data...</p>
         ) : (
@@ -198,7 +184,7 @@ const App = () => {
             )}
           </>
         )}
-  
+
         {loadingDaily ? (
           <p style={{ textAlign: "center", color: "#aaa" }}>Loading Daily EMA44 data...</p>
         ) : (
@@ -211,18 +197,6 @@ const App = () => {
       </div>
     </>
   );
-  
-};
-
-const thStyle = {
-  padding: "12px",
-  borderBottom: "1px solid #2c313d",
-  fontWeight: "bold",
-};
-
-const tdStyle = {
-  padding: "10px",
-  borderBottom: "1px solid #2c313d",
 };
 
 export default App;
