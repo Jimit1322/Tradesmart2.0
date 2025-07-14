@@ -4,5 +4,311 @@
     "close": 3359.7,
     "ema44": 3352.01,
     "volume": 24024
+  },
+  {
+    "symbol": "ADANIENSOL",
+    "close": 874.05,
+    "ema44": 870.75,
+    "volume": 989521
+  },
+  {
+    "symbol": "ADANIGREEN",
+    "close": 995.2,
+    "ema44": 987.37,
+    "volume": 1850757
+  },
+  {
+    "symbol": "APLLTD",
+    "close": 976.6,
+    "ema44": 967.31,
+    "volume": 60016
+  },
+  {
+    "symbol": "ALLCARGO",
+    "close": 33.83,
+    "ema44": 33.59,
+    "volume": 1270027
+  },
+  {
+    "symbol": "APOLLOHOSP",
+    "close": 7189.5,
+    "ema44": 7135.64,
+    "volume": 578061
+  },
+  {
+    "symbol": "BAJAJFINSV",
+    "close": 2017.2,
+    "ema44": 2006.54,
+    "volume": 1145529
+  },
+  {
+    "symbol": "BANDHANBNK",
+    "close": 175.59,
+    "ema44": 175.08,
+    "volume": 3536016
+  },
+  {
+    "symbol": "BATAINDIA",
+    "close": 1239.1,
+    "ema44": 1231.42,
+    "volume": 84786
+  },
+  {
+    "symbol": "BERGEPAINT",
+    "close": 572.55,
+    "ema44": 567.0,
+    "volume": 278290
+  },
+  {
+    "symbol": "BDL",
+    "close": 1856.6,
+    "ema44": 1842.75,
+    "volume": 2136407
+  },
+  {
+    "symbol": "BHARTIARTL",
+    "close": 1921.9,
+    "ema44": 1916.4,
+    "volume": 13103980
+  },
+  {
+    "symbol": "BBTC",
+    "close": 1950.6,
+    "ema44": 1946.17,
+    "volume": 33251
+  },
+  {
+    "symbol": "CLEAN",
+    "close": 1426.6,
+    "ema44": 1418.29,
+    "volume": 39959
+  },
+  {
+    "symbol": "CONCORDBIO",
+    "close": 1803.3,
+    "ema44": 1793.96,
+    "volume": 124823
+  },
+  {
+    "symbol": "DLF",
+    "close": 815.1,
+    "ema44": 807.94,
+    "volume": 1997098
+  },
+  {
+    "symbol": "DEEPAKNTR",
+    "close": 1988.1,
+    "ema44": 1973.32,
+    "volume": 130857
+  },
+  {
+    "symbol": "EMAMILTD",
+    "close": 587.0,
+    "ema44": 582.17,
+    "volume": 604097
+  },
+  {
+    "symbol": "FEDERALBNK",
+    "close": 207.38,
+    "ema44": 207.05,
+    "volume": 4009049
+  },
+  {
+    "symbol": "FINCABLES",
+    "close": 957.45,
+    "ema44": 952.2,
+    "volume": 85809
+  },
+  {
+    "symbol": "GPIL",
+    "close": 186.82,
+    "ema44": 186.47,
+    "volume": 1209954
+  },
+  {
+    "symbol": "GMDCLTD",
+    "close": 379.1,
+    "ema44": 378.61,
+    "volume": 999612
+  },
+  {
+    "symbol": "GNFC",
+    "close": 539.1,
+    "ema44": 537.53,
+    "volume": 193658
+  },
+  {
+    "symbol": "HAPPSTMNDS",
+    "close": 629.1,
+    "ema44": 626.06,
+    "volume": 281454
+  },
+  {
+    "symbol": "HAPPYFORGE",
+    "close": 934.05,
+    "ema44": 928.88,
+    "volume": 9802
+  },
+  {
+    "symbol": "HAL",
+    "close": 4866.1,
+    "ema44": 4847.2,
+    "volume": 1091444
+  },
+  {
+    "symbol": "HUDCO",
+    "close": 230.71,
+    "ema44": 230.56,
+    "volume": 4239830
+  },
+  {
+    "symbol": "IRCTC",
+    "close": 773.7,
+    "ema44": 771.67,
+    "volume": 512434
+  },
+  {
+    "symbol": "INOXWIND",
+    "close": 176.23,
+    "ema44": 175.91,
+    "volume": 2749440
+  },
+  {
+    "symbol": "JINDALSTEL",
+    "close": 938.4,
+    "ema44": 933.83,
+    "volume": 1676679
+  },
+  {
+    "symbol": "KEC",
+    "close": 864.65,
+    "ema44": 864.57,
+    "volume": 500095
+  },
+  {
+    "symbol": "LTTS",
+    "close": 4410.5,
+    "ema44": 4390.01,
+    "volume": 128566
+  },
+  {
+    "symbol": "LICHSGFIN",
+    "close": 604.65,
+    "ema44": 602.3,
+    "volume": 1432073
+  },
+  {
+    "symbol": "LTIM",
+    "close": 5206.0,
+    "ema44": 5202.38,
+    "volume": 372811
+  },
+  {
+    "symbol": "LICI",
+    "close": 922.4,
+    "ema44": 918.08,
+    "volume": 602074
+  },
+  {
+    "symbol": "LODHA",
+    "close": 1400.1,
+    "ema44": 1396.52,
+    "volume": 1140138
+  },
+  {
+    "symbol": "MRPL",
+    "close": 142.44,
+    "ema44": 141.09,
+    "volume": 1701975
+  },
+  {
+    "symbol": "MARUTI",
+    "close": 12574.0,
+    "ema44": 12485.03,
+    "volume": 194420
+  },
+  {
+    "symbol": "MAXHEALTH",
+    "close": 1219.2,
+    "ema44": 1209.54,
+    "volume": 2348913
+  },
+  {
+    "symbol": "MEDPLUS",
+    "close": 874.35,
+    "ema44": 871.96,
+    "volume": 103232
+  },
+  {
+    "symbol": "METROBRAND",
+    "close": 1172.2,
+    "ema44": 1165.27,
+    "volume": 31772
+  },
+  {
+    "symbol": "NESTLEIND",
+    "close": 2403.5,
+    "ema44": 2389.95,
+    "volume": 370532
+  },
+  {
+    "symbol": "OBEROIRLTY",
+    "close": 1835.5,
+    "ema44": 1829.2,
+    "volume": 235830
+  },
+  {
+    "symbol": "MOTHERSON",
+    "close": 150.75,
+    "ema44": 149.93,
+    "volume": 6595034
+  },
+  {
+    "symbol": "RENUKA",
+    "close": 32.54,
+    "ema44": 32.33,
+    "volume": 3221641
+  },
+  {
+    "symbol": "SHRIRAMFIN",
+    "close": 668.25,
+    "ema44": 667.69,
+    "volume": 4931083
+  },
+  {
+    "symbol": "SPARC",
+    "close": 159.34,
+    "ema44": 159.32,
+    "volume": 1252773
+  },
+  {
+    "symbol": "TATAINVEST",
+    "close": 6605.5,
+    "ema44": 6600.67,
+    "volume": 16613
+  },
+  {
+    "symbol": "TATAPOWER",
+    "close": 396.85,
+    "ema44": 396.74,
+    "volume": 6893575
+  },
+  {
+    "symbol": "THERMAX",
+    "close": 3465.0,
+    "ema44": 3450.34,
+    "volume": 89615
+  },
+  {
+    "symbol": "UPL",
+    "close": 652.8,
+    "ema44": 651.76,
+    "volume": 2145893
+  },
+  {
+    "symbol": "IDEA",
+    "close": 7.17,
+    "ema44": 7.13,
+    "volume": 341830457
   }
 ]

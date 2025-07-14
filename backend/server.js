@@ -1,7 +1,9 @@
 /**
  * Express Server for TradeSmart 2.0
- * - /api/scan        → fresh 5m, 1m, daily scans
- * - /api/ohlc/:symbol?tf=... → live OHLC + EMA chart data
+ * - /api/scan/intraday → 5m, 1m scan from MongoDB
+ * - /api/scan/daily    → daily scan from JSON
+ * - /api/ohlc/:symbol  → OHLC chart data from file
+ * - /api/history/5m    → last 5m scan results (from MongoDB)
  */
 
 import express, { json } from 'express';
@@ -9,6 +11,7 @@ import { exec } from 'child_process';
 import fs from 'fs';
 import cors from 'cors';
 import path from 'path';
+import { getCollection } from './db.js';
 
 const app = express();
 const PORT = 4000;
@@ -16,79 +19,51 @@ const PORT = 4000;
 app.use(cors());
 app.use(json());
 
-// --- Helper to safely read JSON ---
-function readJSONSync(filePath) {
-  try {
-    const raw = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error(`❌ Failed to read ${filePath}:`, err.message);
-    return [];
-  }
-}
+// --- /api/scan/intraday → Serve 5m + 1m results from MongoDB ---
+// app.get('/api/scan/intraday', async (req, res) => {
+//   try {
+//     const collection = await getCollection("scan_5m");
 
-// --- /api/scan → Runs 5m, 1m, daily scan scripts ---
-// app.get('/api/scan', async (req, res) => {
-//   console.log("🔁 Starting fresh scan for 5m, 1m, daily...");
+//     const today = new Date();
+//     const scanDate = today.toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-//   let completed = 0;
-//   const results = {};
+//     const data5m = await collection
+//       .find({ scan_date: scanDate, strategy: "5m_momentum" })
+//       .toArray();
 
-//   const checkAndRespond = () => {
-//     if (completed === 3) {
-//       console.log("✅ All scans completed. Responding...");
-//       res.json(results);
-//     }
-//   };
+//     // TODO: If you also scan and store 1m data to MongoDB, fetch that too
+//     const data1m = []; // empty for now
 
-//   const runScript = (label, script, outputFile) => {
-//     const process = exec(`python3 ${script}`, { cwd: 'scan' });
-
-//     process.on('close', () => {
-//       const data = readJSONSync(`scan/${outputFile}`);
-//       results[label] = data;
-//       console.log(`✅ ${label} → ${data.length} stock(s)`);
-//       completed++;
-//       checkAndRespond();
-//     });
-
-//     process.on('error', (err) => {
-//       console.error(`❌ ${label} failed:`, err.message);
-//       results[label] = [];
-//       completed++;
-//       checkAndRespond();
-//     });
-//   };
-
-//   runScript('5m', 'scan_momentum_5min.py', 'results.json');
-//   runScript('1m', 'scan_momentum_1min.py', 'results_1min.json');
-//   runScript('daily', 'scan_44ema_daily.py', 'results_44_daily.json');
+//     console.log(`📦 MongoDB: ${data5m.length} stocks (5m)`);
+//     res.json({ "5m": data5m, "1m": data1m });
+//   } catch (err) {
+//     console.error("❌ MongoDB intraday fetch failed:", err.message);
+//     res.status(500).json({ error: "MongoDB intraday fetch failed" });
+//   }
 // });
-// --- /api/scan/intraday → 5m + 1m scans only ---
-app.get('/api/scan/intraday', (req, res) => {
-  console.log("🔁 Starting intraday scan (5m + 1m)");
+app.get('/api/scan/intraday', async (req, res) => {
+  console.log("🔁 Running intraday scan (5m + 1m) and fetching from MongoDB");
 
   let completed = 0;
   const results = {};
 
   const checkAndRespond = () => {
     if (completed === 2) {
-      console.log("✅ Intraday scan done.");
+      console.log("✅ Intraday scan response sent.");
       res.json(results);
     }
   };
 
-  const runScript = (label, script, outputFile) => {
-    const process = exec(`python3 ${script}`, { cwd: 'scan' });
-
-    process.on('close', () => {
-      const path = `scan/${outputFile}`;
+  const runScanAndFetch = async (label, script, strategy, collectionName) => {
+    exec(`python3 ${script}`, { cwd: 'scan' }).on('close', async () => {
       try {
-        const raw = fs.readFileSync(path, 'utf8');
-        results[label] = JSON.parse(raw);
-        console.log(`✅ ${label} → ${results[label].length} stocks`);
+        const collection = await getCollection(collectionName);
+        const today = new Date().toISOString().slice(0, 10);
+        const stocks = await collection.find({ scan_date: today, strategy }).toArray();
+        results[label] = stocks;
+        console.log(`✅ ${label} → ${stocks.length} stock(s)`);
       } catch (err) {
-        console.error(`❌ Failed to read ${label}:`, err.message);
+        console.error(`❌ Failed to read ${label} from MongoDB:`, err.message);
         results[label] = [];
       }
       completed++;
@@ -96,16 +71,14 @@ app.get('/api/scan/intraday', (req, res) => {
     });
   };
 
-  runScript('5m', 'scan_momentum_5min.py', 'results.json');
-  runScript('1m', 'scan_momentum_1min.py', 'results_1min.json');
+  runScanAndFetch("5m", "scan_momentum_5min.py", "5m_momentum", "scan_5m");
+  runScanAndFetch("1m", "scan_momentum_1min.py", "1m_momentum", "scan_1m");
 });
 
-
-// --- /api/scan/daily → Daily 44 EMA scan only ---
+// --- /api/scan/daily → Daily 44 EMA scan from results_44_daily.json ---
 app.get('/api/scan/daily', (req, res) => {
   const resultPath = path.join('scan', 'results_44_daily.json');
 
-  // Check if the results file exists and is from today
   try {
     const stats = fs.statSync(resultPath);
     const lastModified = new Date(stats.mtime);
@@ -126,7 +99,6 @@ app.get('/api/scan/daily', (req, res) => {
     console.log("⚠️ No daily scan result found or invalid, will generate fresh.");
   }
 
-  // If not cached for today, run the Python script
   console.log("🔁 Running fresh daily scan (44 EMA)");
   const process = exec('python3 scan_44ema_daily.py', { cwd: 'scan' });
 
@@ -148,7 +120,7 @@ app.get('/api/scan/daily', (req, res) => {
   });
 });
 
-// --- /api/ohlc/:symbol?tf=... → Fetch OHLC + EMA data dynamically ---
+// --- /api/ohlc/:symbol?tf=... → Live OHLC + EMA from fetch_ohlc.py ---
 app.get('/api/ohlc/:symbol', (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
   const tf = req.query.tf || '5m';
@@ -178,6 +150,77 @@ app.get('/api/ohlc/:symbol', (req, res) => {
     res.status(500).json({ error: 'Chart data fetch failed' });
   });
 });
+
+// --- /api/history/5m → Get last 1000 5m scan results grouped by date ---
+app.get("/api/history/5m", async (req, res) => {
+  try {
+    const collection = await getCollection("scan_5m");
+
+    const results = await collection
+      .find({ strategy: "5m_momentum" })
+      .sort({ timestamp: -1 })
+      .limit(1000)
+      .toArray();
+
+    const grouped = {};
+
+    for (const stock of results) {
+      const date = stock.scan_date;
+      if (!grouped[date]) {
+        grouped[date] = { stocks: [], win: 0, loss: 0, no_hit: 0, pending: 0 };
+      }
+
+      grouped[date].stocks.push(stock);
+
+      const status = stock.status || "pending";
+      if (status === "win") grouped[date].win++;
+      else if (status === "loss") grouped[date].loss++;
+      else if (status === "no_hit") grouped[date].no_hit++;
+      else grouped[date].pending++;
+    }
+
+    res.json(grouped);
+  } catch (err) {
+    console.error("❌ History fetch error:", err.message);
+    res.status(500).json({ error: "Failed to fetch scan history" });
+  }
+});
+
+app.get("/api/history/1m", async (req, res) => {
+  try {
+    const collection = await getCollection("scan_1m");
+
+    const results = await collection
+      .find({ strategy: "1m_momentum" })
+      .sort({ timestamp: -1 })
+      .limit(1000)
+      .toArray();
+
+    const grouped = {};
+
+    for (const stock of results) {
+      const date = stock.scan_date;
+      if (!grouped[date]) {
+        grouped[date] = { stocks: [], win: 0, loss: 0, no_hit: 0, pending: 0 };
+      }
+
+      grouped[date].stocks.push(stock);
+
+      const status = stock.status || "pending";
+      if (status === "win") grouped[date].win++;
+      else if (status === "loss") grouped[date].loss++;
+      else if (status === "no_hit") grouped[date].no_hit++;
+      else grouped[date].pending++;
+    }
+
+    res.json(grouped);
+  } catch (err) {
+    console.error("❌ History fetch error:", err.message);
+    res.status(500).json({ error: "Failed to fetch scan history" });
+  }
+});
+
+
 
 // --- Start server ---
 app.listen(PORT, () => {

@@ -1,41 +1,29 @@
-"""
-This script scans NSE-listed stocks from the Nifty 500 using 1-minute interval data over the past 7 days.
-
-It identifies stocks that:
-1. Showed **recent strong bullish momentum**, defined as at least 4 out of the last 5 candles (within a rolling window)
-   where:
-   - The candle closed higher than it opened
-   - The candle's body size was > 0.3%
-   - The close broke above the previous candle's high
-
-2. Are now **trading near their 9-period EMA**, indicating a potential pullback or retest opportunity.
-
-If both conditions are met, the stock is added to the result list with its current close price, EMA value, and volume.
-
-The matched stocks are saved to a JSON file: 'scan/results_1min.json'.
-"""
-
-"""
-This script scans NSE stocks for 1-minute momentum setups using:
-1. Recent strong bullish candles
-2. Price trading near EMA9
-
-Stocks matching both are exported to 'results_1min.json'
-"""
-
 import yfinance as yf
 import pandas as pd
 import json
+from datetime import datetime
+from pymongo import MongoClient
+from bson import ObjectId
 import helpers as hp
 
-# Load stock symbols
+# --- MongoDB Setup ---
+client = MongoClient("mongodb://localhost:27017")
+db = client["tradesmart"]
+collection = db["scan_1m"]
+
+# --- Config ---
 df = pd.read_csv("Nifty 500.csv")
 symbols = df["SYMBOL"].dropna().unique()
 
 momentum_length = 7
 required_strong_candles = 4
 ema_percent = 0.005
+scan_date = datetime.now().strftime("%Y-%m-%d")
 
+# Clean up old entries for today's scan
+
+
+# --- Results ---
 results = []
 
 for symbol in symbols:
@@ -69,31 +57,72 @@ for symbol in symbols:
             continue
 
         found = hp.check_momentum_condition_1min(
-            merged, momentum_length, required_strong_candles,
-            close_col="Close", open_col="Open", high_col="High", body_pct=0.003
+            merged,
+            momentum_length,
+            required_strong_candles,
+            close_col="Close",
+            open_col="Open",
+            high_col="High",
+            body_pct=0.003
         )
 
         if found:
             close_price = merged["Close"].iloc[-1]
             ema_price = merged["EMA9"].iloc[-1]
+            entry = merged["Close"].iloc[-1]
+            target = round(entry * 1.01, 2)
+            stop_loss = round(entry * 0.995, 2)
+
             if abs(close_price - ema_price) / close_price < ema_percent:
-                results.append({
+                doc = {
                     "symbol": symbol,
                     "close": round(close_price, 2),
                     "ema9": round(ema_price, 2),
-                    "volume": int(volume.iloc[-1])
-                })
+                    "volume": int(volume.iloc[-1]),
+                    "timestamp": merged.index[-1].isoformat(),
+                    "scan_date": scan_date,
+                    "strategy": "1m_momentum",
+                    "target": target,
+                    "stop_loss": stop_loss,
+                    "status": "pending" 
+                }
+                # results.append(doc)
+                 # ✅ Upsert to avoid duplicates
+                existing = collection.find_one({
+                    "symbol": symbol,
+                    "scan_date": scan_date,
+                    "strategy": "1m_momentum"
+                }) 
+                if existing and existing.get("status") != "pending":
+                    doc["status"] = existing["status"]  # preserve evaluated status
+                else:
+                    doc["status"] = "pending"
+
+                collection.update_one(
+                {
+                    "symbol": symbol,
+                    "scan_date": scan_date,
+                    "strategy": "1m_momentum"
+                },
+                {"$set": doc},
+                upsert=True
+            )
+                print(f"✅ {symbol} inserted")
 
     except Exception as e:
         print(f"⚠️ Error with {symbol_yf}: {e}")
 
-with open("results_1min.json", "w") as f:
-    json.dump(results, f, indent=2)
+
+# --- Optional: Save to JSON ---
+# class MongoJSONEncoder(json.JSONEncoder):
+#     def default(self, obj):
+#         if isinstance(obj, (datetime, pd.Timestamp)):
+#             return obj.isoformat()
+#         if isinstance(obj, ObjectId):
+#             return str(obj)
+#         return super().default(obj)
+
+# with open("results_1min.json", "w") as f:
+#     json.dump(results, f, indent=2, cls=MongoJSONEncoder)
 
 print(f"\n✅ 1-min Scan complete. {len(results)} stock(s) matched the strategy.\n")
-
-            
-        
-        
-    
-

@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import StockChart from "./StockChart.jsx";
 import Navbar from "./components/Navbar.jsx";
 import { thStyle, tdStyle, downloadCSV } from "./helpers/stockUtils.js";
+import TimeframeTabs from "./components/timeFrameTab.jsx";import ScanHistory from "./components/ScanHistory.jsx";
+
+// inside App return:
+
+
 
 const App = () => {
   const [data5m, setData5m] = useState([]);
@@ -9,7 +14,7 @@ const App = () => {
   const [dataDaily, setDataDaily] = useState([]);
   const [selectedChart, setSelectedChart] = useState({ symbol: null, tf: null });
   const [loadingIntraday, setLoadingIntraday] = useState(true);
-  const [loadingDaily, setLoadingDaily] = useState(true);
+ const [LoadingDaily, setLoadingDaily] = useState(true)
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -164,37 +169,29 @@ const App = () => {
 
   return (
     <>
-      <Navbar onSearch={setSearchQuery} />
-      <div style={{ padding: 20, backgroundColor: "#0e1116", minHeight: "100vh" }}>
-        {error && <p style={{ color: "#ef5350", textAlign: "center" }}>{error}</p>}
+ <Navbar onSearch={setSearchQuery} />
+<div style={{ padding: 20, backgroundColor: "#0e1116", minHeight: "100vh" }}>
+  {error && <p style={{ color: "#ef5350", textAlign: "center" }}>{error}</p>}
 
-        {loadingIntraday ? (
-          <p style={{ textAlign: "center", color: "#aaa" }}>Loading 5-min & 1-min data...</p>
-        ) : (
-          <>
-            {renderTable(
-              data5m.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
-              "5-min",
-              "EMA22"
-            )}
-            {renderTable(
-              data1m.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
-              "1-min",
-              "EMA9"
-            )}
-          </>
-        )}
+  {loadingIntraday ? (
+    <p style={{ textAlign: "center", color: "#aaa" }}>Loading  data...</p>
+  ) : (
+    <>
+      <TimeframeTabs
+        data1m={data1m}
+        data5m={data5m}
+        dataDaily={dataDaily}  // placeholder until daily loads
+        searchQuery={searchQuery}
+        renderTable={renderTable}
+      />
+   
+    </>
+  )}
 
-        {loadingDaily ? (
-          <p style={{ textAlign: "center", color: "#aaa" }}>Loading Daily EMA44 data...</p>
-        ) : (
-          renderTable(
-            dataDaily.filter((s) => s.symbol.includes(searchQuery.toUpperCase())),
-            "Daily",
-            "EMA44"
-          )
-        )}
-      </div>
+ 
+</div>
+
+
     </>
   );
 };

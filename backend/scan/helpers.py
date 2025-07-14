@@ -62,20 +62,20 @@ def check_gap_up_retest(data, merged, ema_percent=0.005):
 
         yesterday = grouped.get_group(dates[-2])
         today = grouped.get_group(dates[-1])
-        y_close = yesterday["Close"].iloc[-1]
-        o_today = today["Open"].iloc[0]
+        y_close = float(yesterday["Close"].iloc[-1])
+        o_today = float(today["Open"].iloc[0])
         gap = (o_today - y_close) / y_close
 
-        if gap > 0.02:
-            next_candles = merged.iloc[-60:-45]
-            for _, row in next_candles.iterrows():
-                if abs(row["Close"] - row["EMA22"]) / row["Close"] < ema_percent:
-                    return True
+        if gap > 0.03:
+            return True
+          
+                  
 
     except Exception as e:
         print(f"Gap up check failed: {e}")
 
     return False
+
 
 
 def check_ema_slope_condition(merged, ema_percent=0.005):
@@ -123,3 +123,5 @@ def check_momentum_condition_1min(
             return True
 
     return False
+
+
