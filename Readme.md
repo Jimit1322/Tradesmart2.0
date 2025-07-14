@@ -1,43 +1,83 @@
-
 # 📈 TradeSmart 2.0 - Momentum Retest Stock Scanner
 
-**TradeSmart 2.0** is a full-stack stock scanner that identifies **momentum stocks** which are **retesting their EMA (22 or 9)** after a strong move. It uses a Python backend for stock scanning and a React frontend for interactive chart visualization.
+**TradeSmart 2.0** is a full-stack stock scanner and backtesting engine that identifies **momentum-based trading opportunities** using **EMA retests** on NSE stocks.
 
 ---
 
 ## 🚀 Features
 
-- 📊 Scans both **5-minute** and **1-minute** charts for momentum setups.
-- 🔁 Detects **retest** of EMA (22 for 5m, 9 for 1m) after strong bullish momentum.
-- 🧠 Applies filters like:
-  - 3–4 bullish candles out of 5 with >0.3–0.5% gains
-  - Breakout above previous candle highs
-  - Price pullback to EMA
-  - Optional gap-up or rising EMA slope
-- 🧾 CSV export for easy tracking and analysis
-- 📈 Lightweight interactive charts with:
+- 🔍 **Real-time stock scanning** using:
+  - ✅ 5-minute chart (EMA22)
+  - ✅ 1-minute chart (EMA9)
+  - ✅ Daily (EMA44)
+- 🔁 Identifies **retest near EMA after strong move**
+- 📉 **Backtest win/loss** automatically using live future candles
+- 🧾 CSV export support
+- 📊 Interactive charts (Lightweight Charts) with:
   - EMA overlays
-  - Toggleable volume bars
-  - Crosshair-based OHLC/volume info
+  - Volume bars
+  - Trade visualization with entry, target, and stop-loss
+- 💾 Stores all scans in **MongoDB** for historical viewing
+- 📜 Shows **Scan History** tab with daily wins/losses
 
 ---
 
 ## 🧠 Strategy Logic
 
-### ✅ 5-Min Strategy (scan_momentem_5min.py)
-- Detects momentum in previous 40–60 candles using:
-  - ≥3 bullish candles in a 5-candle window
-  - Each gaining >0.5% and closing above previous high
-- Confirms price is **now near EMA22** or **gapped up + pulled back**
-- Identifies stocks with a **consistently rising EMA** (min % rise over 5+ candles)
+### ✅ 5-Min Strategy (`scan_momentum_5min.py`)
 
-### ✅ 1-Min Strategy (scan_momentum_1min.py)
-- Detects micro-momentum in last 80+ candles:
+- Looks back 60 candles to find:
+  - ≥3 strong bullish candles (gain > 0.5%, closing above previous high)
+- Retest of **EMA22**, or **gap-up + EMA pullback**
+- EMA must have a **positive slope**
+- 🎯 Calculates dynamic `target` and `stop-loss`
+- ➕ Logs trades to MongoDB with `"status": "pending"` → later evaluated for **win/loss**
+
+### ✅ 1-Min Strategy (`scan_momentum_1min.py`)
+
+- Uses last 80 candles:
   - ≥4 bullish candles in a 7-candle window
-  - Gains >0.3% and price near EMA9
+  - Gain > 0.3%
+- Confirms **proximity to EMA9**
+- Pushes results to MongoDB for history & backtesting
 
+---
 
+## ♻️ Win/Loss Backtesting (`backtest_5m.py`, `backtest_1m.py`)
 
+- For each pending trade:
+  - Fetches next **up to 2 days** of 1m/5m candles
+  - Marks trade as:
+    - ✅ `win` → if target hit
+    - ❌ `loss` → if stop-loss hit
+    - ⏸️ `no_hit` → if neither
+- Status is **auto-updated in MongoDB** and shown in UI
+
+---
+
+## 💾 MongoDB Integration
+
+- All scan results stored in:
+  - `scan_5m` for 5m strategy
+  - `scan_1m` for 1m strategy
+- Indexed by:
+  - `symbol`, `scan_date`, `timestamp`, `strategy`, `status`
+- De-duplicates based on `symbol + date + strategy`
+
+---
+
+## 🧑‍💻 Frontend (React + Tailwind + Lightweight Charts)
+
+### Components:
+- `StockChart.jsx` → Candlestick chart with entry/SL/target visualization
+- `TimeframeTabs.jsx` → Tabs for switching 5m / 1m / Daily view
+- `ScanHistory.jsx` → Historical scan results + win/loss statuses
+
+### Features:
+- 🔍 **Search filter**
+- 📅 **Tab switchable scan history**
+- 🟢 Green = `win`, 🔴 Red = `loss`, 🟡 Yellow = `pending`
+- Chart includes crosshair + OHLC info
 
 ---
 
@@ -45,12 +85,15 @@
 
 | Layer       | Tools & Libraries                              |
 |-------------|------------------------------------------------|
-| Backend     | Python, yfinance, pandas               |
-| Frontend    | React, Vite, lightweight-charts, Tailwind CSS  |
+| Backend     | Python, yfinance, pandas, pymongo              |
+| Frontend    | React, Vite, Tailwind CSS, lightweight-charts  |
 | Server/API  | Node.js, Express                               |
+| Database    | MongoDB                                        |
 | Data Format | JSON, CSV                                      |
 
 ---
+
+
 
 
 ## ⚙️ Commands To Run
@@ -68,10 +111,8 @@ node server.js
 cd client
 npm install
 npm run dev
+
 ```
-
----
-
 ## 👤 Author
 
 **Jimit Sankhesara**  
