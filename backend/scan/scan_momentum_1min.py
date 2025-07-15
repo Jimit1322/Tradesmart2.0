@@ -17,7 +17,7 @@ symbols = df["SYMBOL"].dropna().unique()
 
 momentum_length = 7
 required_strong_candles = 4
-ema_percent = 0.005
+ema_percent = 0.002
 scan_date = datetime.now().strftime("%Y-%m-%d")
 
 # Clean up old entries for today's scan
@@ -70,8 +70,8 @@ for symbol in symbols:
             close_price = merged["Close"].iloc[-1]
             ema_price = merged["EMA9"].iloc[-1]
             entry = merged["Close"].iloc[-1]
-            target = round(entry * 1.01, 2)
-            stop_loss = round(entry * 0.995, 2)
+            target = round(entry * 1.005, 2)
+            stop_loss = round(entry * 0.998, 2)
 
             if abs(close_price - ema_price) / close_price < ema_percent:
                 doc = {

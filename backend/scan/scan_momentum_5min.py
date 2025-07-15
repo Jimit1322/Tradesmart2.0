@@ -24,7 +24,7 @@ symbols = df["SYMBOL"].dropna().unique()
 # Parameters
 momentum_length = 5
 required_strong_candles = 3
-ema_percent = 0.005  # 0.5%
+ema_percent = 0.0035  # 0.35%
 scan_date = datetime.now().strftime("%Y-%m-%d")
 # collection.delete_many({"scan_date": scan_date, "strategy": "5m_momentum"})
 # Run scan

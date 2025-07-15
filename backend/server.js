@@ -219,6 +219,62 @@ cron.schedule('*/30 * * * *', () => {
 });
 
 
+app.get("/api/summary", async (req, res) => {
+  try {
+    const collection5m = await getCollection("scan_5m");
+    const collection1m = await getCollection("scan_1m");
+
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7)); // Last Monday
+    monday.setHours(0, 0, 0, 0);
+
+    const query = { timestamp: { $gte: monday.toISOString() } };
+
+    const [all5m, all1m] = await Promise.all([
+      collection5m.find(query).toArray(),
+      collection1m.find(query).toArray(),
+    ]);
+
+    const summarize = (data) => {
+      const total = data.length;
+      const wins = data.filter((d) => d.status === "win").length;
+      const losses = data.filter((d) => d.status === "loss").length;
+      const noHits = data.filter((d) => d.status === "no_hit").length;
+      const winRate = total > 0 ? ((wins / total) * 100).toFixed(2) : "0.00";
+      return { total, wins, losses, noHits, winRate };
+    };
+
+    res.json({
+      summary_5m: summarize(all5m),
+      summary_1m: summarize(all1m),
+    });
+  } catch (err) {
+    console.error("❌ Weekly summary error:", err.message);
+    res.status(500).json({ error: "Failed to get weekly summary" });
+  }
+});
+
+// 🕒 Weekly cleanup and summary every Sunday at 6:00 PM
+cron.schedule("0 18 * * 0", () => {
+  const scriptPath = path.join("scan", "cleanup_and_summarize.py");
+  console.log("🧹 Running weekly cleanup_and_summarize.py...");
+
+  exec(`python3 ${scriptPath}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`❌ Cleanup Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`⚠️ Cleanup stderr: ${stderr}`);
+    }
+    console.log(`✅ Cleanup Output:\n${stdout}`);
+  });
+});
+
+
+
+
 
 // --- Start server ---
 app.listen(PORT, () => {

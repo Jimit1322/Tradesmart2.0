@@ -4,7 +4,7 @@ Backtest 1m trades for win/loss based on future candles after scan.
 
 from pymongo import MongoClient
 import yfinance as yf
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone,time
 import pandas as pd
 
 # --- MongoDB Setup ---
@@ -71,6 +71,21 @@ for trade in all_trades:
             {"$set": { "status": result }}
         )
         print(f"✅ {trade['symbol']} → {result}")
+        
+
 
     except Exception as e:
         print(f"❌ Error processing {trade['symbol']}: {e}")
+
+now_ist = datetime.now().astimezone().time()
+market_close = time(15, 30)
+
+if now_ist >= market_close:
+    delete_result = collection.delete_many({
+        "strategy": "1m_momentum",
+        "status": { "$in": ["pending", "no_hit"] },
+        "scan_date": datetime.now().strftime("%Y-%m-%d")
+    })
+    print(f"🗑️ Deleted {delete_result.deleted_count} stale trades after 3:30 PM")
+else:
+    print("⏳ Market still open — skipping cleanup")

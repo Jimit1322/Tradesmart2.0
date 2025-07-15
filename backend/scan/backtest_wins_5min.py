@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import yfinance as yf
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone,time
 import pandas as pd
 
 client = MongoClient("mongodb://localhost:27017")
@@ -64,8 +64,23 @@ for trade in (pending_trades + no_hit_trades):
             {"_id": trade["_id"]},
             {"$set": { "status": result, "backtest_time": datetime.utcnow().isoformat() }}
         )
-
         print(f"✅ {trade['symbol']} → {result}")
+              
+       
+       
 
     except Exception as e:
         print(f"❌ Error processing {trade['symbol']}: {e}")
+
+now_ist = datetime.now().astimezone().time()
+market_close = time(15, 30)
+
+if now_ist >= market_close:
+    delete_result = collection.delete_many({
+        "strategy": "5m_momentum",
+        "status": { "$in": ["pending", "no_hit"] },
+        "scan_date": datetime.now().strftime("%Y-%m-%d")
+    })
+    print(f"🗑️ Deleted {delete_result.deleted_count} stale trades after 3:30 PM")
+else:
+    print("⏳ Market still open — skipping cleanup")
