@@ -12,6 +12,8 @@ import fs from 'fs';
 import cors from 'cors';
 import path from 'path';
 import { getCollection } from './db.js';
+import cron from 'node-cron';
+
 
 const app = express();
 const PORT = 4000;
@@ -19,28 +21,7 @@ const PORT = 4000;
 app.use(cors());
 app.use(json());
 
-// --- /api/scan/intraday → Serve 5m + 1m results from MongoDB ---
-// app.get('/api/scan/intraday', async (req, res) => {
-//   try {
-//     const collection = await getCollection("scan_5m");
 
-//     const today = new Date();
-//     const scanDate = today.toISOString().slice(0, 10); // "YYYY-MM-DD"
-
-//     const data5m = await collection
-//       .find({ scan_date: scanDate, strategy: "5m_momentum" })
-//       .toArray();
-
-//     // TODO: If you also scan and store 1m data to MongoDB, fetch that too
-//     const data1m = []; // empty for now
-
-//     console.log(`📦 MongoDB: ${data5m.length} stocks (5m)`);
-//     res.json({ "5m": data5m, "1m": data1m });
-//   } catch (err) {
-//     console.error("❌ MongoDB intraday fetch failed:", err.message);
-//     res.status(500).json({ error: "MongoDB intraday fetch failed" });
-//   }
-// });
 app.get('/api/scan/intraday', async (req, res) => {
   console.log("🔁 Running intraday scan (5m + 1m) and fetching from MongoDB");
 
@@ -218,6 +199,23 @@ app.get("/api/history/1m", async (req, res) => {
     console.error("❌ History fetch error:", err.message);
     res.status(500).json({ error: "Failed to fetch scan history" });
   }
+});
+
+cron.schedule('*/15 * * * *', () => {
+  console.log("⏱️ Running 1m backtest...");
+  exec('python3 scan/backtest_wins_1min.py', (err, stdout, stderr) => {
+    if (err) return console.error("❌ 1m Backtest error:", err.message);
+    console.log(stdout);
+  });
+});
+
+// Run 5m backtest every 30 minutes
+cron.schedule('*/30 * * * *', () => {
+  console.log("⏱️ Running 5m backtest...");
+  exec('python3 scan/backtest_wins_5min.py', (err, stdout, stderr) => {
+    if (err) return console.error("❌ 5m Backtest error:", err.message);
+    console.log(stdout);
+  });
 });
 
 

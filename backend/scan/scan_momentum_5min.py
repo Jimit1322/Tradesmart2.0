@@ -102,27 +102,24 @@ for symbol in symbols:
                     "symbol": symbol,
                     "scan_date": scan_date,
                     "strategy": "5m_momentum"
-                })
-
+                }) 
             if existing and existing.get("status") != "pending":
-                doc["status"] = existing["status"]  # preserve evaluated status
+                    doc["status"] = existing["status"]  # preserve evaluated status
             else:
-                doc["status"] = "pending"
+                    doc["status"] = "pending"
 
             collection.update_one(
-    {
-        "symbol": symbol,
-        "scan_date": scan_date,
-        "strategy": "5m_momentum"
-    },
-    {"$set": doc},
-    upsert=True
-)
-
-
+                {
+                    "symbol": symbol,
+                    "scan_date": scan_date,
+                    "strategy": "5m_momentum"
+                },
+                {"$set": doc},
+                upsert=True
+            )
             print(f"✅ {symbol} → logged to DB")
 
     except Exception as e:
         print(f"❌ Error with {symbol_yf}: {e}")
 
-print(f"\n✅ Scan complete.\n")
+print(f"\n✅ Scan complete.\n") 

@@ -50,8 +50,12 @@ const ScanHistory = ({ searchQuery }) => {
         {Object.entries(filtered).map(([date, { stocks, win, loss, no_hit, pending }]) => (
           <div key={date} style={{ marginBottom: 30 }}>
             <h3 style={{ color: "#fff" }}>
-              {date} 📅 – ✅ {win} | ❌ {loss} | ⚪ {no_hit} | ⏳ {pending}
+              {date} 📅 – ✅ -{win} | ❌-{loss} | ⚪ {no_hit} | ⏳ {pending}
             </h3>
+            <h3 style={{color:"#fff"}}>
+            ✅ %={((win/(win+loss))*100).toFixed(2)} | ❌%={((loss/(loss+win))*100).toFixed(2)}
+            </h3>
+
             <table style={{ width: "100%", borderCollapse: "collapse", background: "#1e222d", color: "#eee" }}>
               <thead>
                 <tr style={{ backgroundColor: "#2c2f35" }}>

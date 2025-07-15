@@ -1,22 +1,17 @@
-"""
-Backtest 5m trades for win/loss based on future candles after scan.
-"""
-
 from pymongo import MongoClient
 import yfinance as yf
 from datetime import datetime, timedelta, timezone
 import pandas as pd
 
-# --- Mongo Setup ---
 client = MongoClient("mongodb://localhost:27017")
 db = client["tradesmart"]
 collection = db["scan_5m"]
 
-# --- Load all pending trades ---
 pending_trades = list(collection.find({ "strategy": "5m_momentum", "status": "pending" }))
-print(f"🟡 Found {len(pending_trades)} pending trades to backtest...")
+no_hit_trades=list(collection.find({"strategy": "5m_momentum", "status": "no_hit"}))
+print(f"🟡 Found {len(pending_trades) ,len(no_hit_trades)} pending trades to backtest...")
 
-for trade in pending_trades:
+for trade in (pending_trades + no_hit_trades):
     symbol = trade["symbol"] + ".NS"
     entry_time = pd.to_datetime(trade["timestamp"])
     target = float(trade["target"])
@@ -37,16 +32,21 @@ for trade in pending_trades:
             auto_adjust=False
         )
 
-        if data.empty or entry_time not in data.index:
-            print(f"⛔ {symbol}: No data after entry")
-            collection.update_one(
-                {"_id": trade["_id"]},
-                {"$set": {"status": "no_data"}}
-            )
+        if data.empty:
+            print(f"⛔ {symbol}: No data")
+            collection.update_one({"_id": trade["_id"]}, {"$set": {"status": "no_data"}})
             continue
 
-        start_idx = data.index.get_loc(entry_time)
-        future = data.iloc[start_idx + 1 :start_idx+30] 
+        # Find nearest candle
+        data = data.sort_index()
+        nearest_time = data.index[data.index.get_indexer([entry_time], method='nearest')[0]]
+        start_idx = data.index.get_loc(nearest_time)
+
+        if start_idx + 1 >= len(data):
+            print(f"⚠️ {symbol}: No future candles after entry")
+            continue
+
+        future = data.iloc[start_idx + 1 :]  # All candles after entry
 
         result = "no_hit"
         for _, row in future.iterrows():
@@ -62,7 +62,7 @@ for trade in pending_trades:
 
         collection.update_one(
             {"_id": trade["_id"]},
-            {"$set": { "status": result }}
+            {"$set": { "status": result, "backtest_time": datetime.utcnow().isoformat() }}
         )
 
         print(f"✅ {trade['symbol']} → {result}")

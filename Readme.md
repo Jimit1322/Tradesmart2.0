@@ -51,7 +51,7 @@
     - ✅ `win` → if target hit
     - ❌ `loss` → if stop-loss hit
     - ⏸️ `no_hit` → if neither
-- Status is **auto-updated in MongoDB** and shown in UI
+- Status is **auto-updated in MongoDB** and shown in UI 
 
 ---
 
@@ -103,12 +103,12 @@
 pip install -r scan/requirements.txt
 
 # Node backend
-cd server
+cd backend
 npm install
 node server.js
 
 # React frontend
-cd client
+cd frontend
 npm install
 npm run dev
 

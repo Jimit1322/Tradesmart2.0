@@ -125,4 +125,4 @@ for symbol in symbols:
 # with open("results_1min.json", "w") as f:
 #     json.dump(results, f, indent=2, cls=MongoJSONEncoder)
 
-print(f"\n✅ 1-min Scan complete. {len(results)} stock(s) matched the strategy.\n")
+print(f"\n✅ 1-min Scan complete. {len(results)} stock(s) matched the strategy.\n") 
