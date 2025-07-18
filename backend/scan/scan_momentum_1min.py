@@ -71,7 +71,7 @@ for symbol in symbols:
             ema_price = merged["EMA9"].iloc[-1]
             entry = merged["Close"].iloc[-1]
             target = round(entry * 1.005, 2)
-            stop_loss = round(entry * 0.998, 2)
+            stop_loss = round(entry * 0.995, 2)
 
             if abs(close_price - ema_price) / close_price < ema_percent:
                 doc = {
@@ -125,4 +125,4 @@ for symbol in symbols:
 # with open("results_1min.json", "w") as f:
 #     json.dump(results, f, indent=2, cls=MongoJSONEncoder)
 
-print(f"\n✅ 1-min Scan complete. {len(results)} stock(s) matched the strategy.\n") 
+print(f"\n✅ 1-min Scan complete.\n") 

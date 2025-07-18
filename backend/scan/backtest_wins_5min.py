@@ -14,8 +14,8 @@ print(f"🟡 Found {len(pending_trades) ,len(no_hit_trades)} pending trades to b
 for trade in (pending_trades + no_hit_trades):
     symbol = trade["symbol"] + ".NS"
     entry_time = pd.to_datetime(trade["timestamp"])
-    target = float(trade["target"])
-    stop_loss = float(trade["stop_loss"])
+    target =float (trade["target"])
+    stop_loss =float(trade["stop_loss"])
 
     now_utc = datetime.now(timezone.utc)
     if (now_utc - entry_time).total_seconds() < 3600:
@@ -78,7 +78,7 @@ market_close = time(15, 30)
 if now_ist >= market_close:
     delete_result = collection.delete_many({
         "strategy": "5m_momentum",
-        "status": { "$in": ["pending", "no_hit"] },
+        "status": { "$in": ["pending", "no_hit","no_data"] },
         "scan_date": datetime.now().strftime("%Y-%m-%d")
     })
     print(f"🗑️ Deleted {delete_result.deleted_count} stale trades after 3:30 PM")

@@ -27,6 +27,7 @@ def check_momentum_condition(merged, momentum_length=5, required_strong_candles=
     """
     Scans for at least N strong bullish candles within a sliding window of recent data.
     """
+    
     for i in range(-65, -5):
         window = merged.iloc[i - momentum_length + 1: i + 1]
         if len(window) < momentum_length:
@@ -62,8 +63,8 @@ def check_gap_up_retest(data, merged, ema_percent=0.005):
 
         yesterday = grouped.get_group(dates[-2])
         today = grouped.get_group(dates[-1])
-        y_close = float(yesterday["Close"].iloc[-1])
-        o_today = float(today["Open"].iloc[0])
+        y_close = (yesterday["Close"].iloc[-1].item())
+        o_today = (today["Open"].iloc[0].item())
         gap = (o_today - y_close) / y_close
 
         if gap > 0.03:

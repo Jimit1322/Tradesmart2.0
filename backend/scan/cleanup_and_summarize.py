@@ -27,8 +27,8 @@ def summarize_strategy(collection_name, strategy_name):
     wins = sum(1 for t in trades if t.get("status") == "win")
     losses = sum(1 for t in trades if t.get("status") == "loss")
 
-    win_rate = round((wins / total) * 100, 2) if total else 0.0
-    loss_rate = round((losses / total) * 100, 2) if total else 0.0
+    win_rate = round((wins /( wins+losses)) * 100, 2) if total else 0.0
+    loss_rate = round((losses /(wins+losses)) * 100, 2) if total else 0.0
 
     # Save to summary collection
     db["weekly_summary"].insert_one({

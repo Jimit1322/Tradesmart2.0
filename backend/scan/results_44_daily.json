@@ -1,242 +1,290 @@
 [
   {
-    "symbol": "ALLCARGO",
-    "close": 33.67,
-    "ema44": 33.59,
-    "volume": 1310200
+    "symbol": "ADANIENSOL",
+    "close": 871.95,
+    "ema44": 871.8,
+    "volume": 94579
   },
   {
-    "symbol": "BLS",
-    "close": 380.05,
-    "ema44": 377.14,
-    "volume": 843099
+    "symbol": "ATGL",
+    "close": 658.75,
+    "ema44": 653.5,
+    "volume": 75649
   },
   {
-    "symbol": "BANDHANBNK",
-    "close": 175.14,
-    "ema44": 175.09,
-    "volume": 2551186
+    "symbol": "BAJFINANCE",
+    "close": 926.7,
+    "ema44": 921.32,
+    "volume": 798030
   },
   {
-    "symbol": "BANKBARODA",
-    "close": 240.92,
-    "ema44": 239.91,
-    "volume": 5818162
+    "symbol": "BAJAJFINSV",
+    "close": 2026.8,
+    "ema44": 2010.7,
+    "volume": 129675
   },
   {
-    "symbol": "BATAINDIA",
-    "close": 1235.6,
-    "ema44": 1231.57,
-    "volume": 214886
+    "symbol": "BHEL",
+    "close": 253.1,
+    "ema44": 252.65,
+    "volume": 465013
   },
   {
-    "symbol": "BHARTIARTL",
-    "close": 1920.9,
-    "ema44": 1916.66,
-    "volume": 5269381
+    "symbol": "BSOFT",
+    "close": 428.05,
+    "ema44": 424.54,
+    "volume": 298552
   },
   {
-    "symbol": "MAPMYINDIA",
-    "close": 1809.4,
-    "ema44": 1808.05,
-    "volume": 72438
+    "symbol": "CHOLAFIN",
+    "close": 1569.4,
+    "ema44": 1563.36,
+    "volume": 167966
   },
   {
-    "symbol": "CGPOWER",
-    "close": 674.8,
-    "ema44": 671.77,
-    "volume": 3086468
+    "symbol": "COROMANDEL",
+    "close": 2316.6,
+    "ema44": 2305.2,
+    "volume": 38097
   },
   {
-    "symbol": "CERA",
-    "close": 6626.5,
-    "ema44": 6595.14,
-    "volume": 16028
+    "symbol": "CROMPTON",
+    "close": 350.75,
+    "ema44": 347.37,
+    "volume": 99414
   },
   {
-    "symbol": "CAMS",
-    "close": 4127.5,
-    "ema44": 4091.34,
-    "volume": 346737
+    "symbol": "EPL",
+    "close": 235.2,
+    "ema44": 233.39,
+    "volume": 97008
   },
   {
-    "symbol": "EICHERMOT",
-    "close": 5540.5,
-    "ema44": 5520.8,
-    "volume": 503684
+    "symbol": "GRASIM",
+    "close": 2751.8,
+    "ema44": 2736.49,
+    "volume": 56439
   },
   {
-    "symbol": "EMAMILTD",
-    "close": 585.4,
-    "ema44": 582.3,
-    "volume": 698671
+    "symbol": "GMDCLTD",
+    "close": 380.5,
+    "ema44": 378.67,
+    "volume": 137477
   },
   {
-    "symbol": "HEROMOTOCO",
-    "close": 4251.7,
-    "ema44": 4234.07,
-    "volume": 293675
+    "symbol": "GSFC",
+    "close": 203.0,
+    "ema44": 202.02,
+    "volume": 102998
   },
   {
-    "symbol": "HINDALCO",
-    "close": 666.5,
-    "ema44": 664.03,
-    "volume": 4338084
+    "symbol": "HAPPSTMNDS",
+    "close": 629.1,
+    "ema44": 626.65,
+    "volume": 28710
   },
   {
-    "symbol": "HAL",
-    "close": 4886.2,
-    "ema44": 4849.24,
-    "volume": 831409
-  },
-  {
-    "symbol": "HUDCO",
-    "close": 231.43,
-    "ema44": 230.6,
-    "volume": 4217747
+    "symbol": "HAPPYFORGE",
+    "close": 936.5,
+    "ema44": 930.9,
+    "volume": 886
   },
   {
     "symbol": "ITC",
-    "close": 419.4,
-    "ema44": 419.36,
-    "volume": 6896989
+    "close": 422.6,
+    "ema44": 420.04,
+    "volume": 517612
   },
   {
-    "symbol": "INOXWIND",
-    "close": 176.55,
-    "ema44": 175.95,
-    "volume": 3655473
+    "symbol": "INDUSTOWER",
+    "close": 403.85,
+    "ema44": 400.16,
+    "volume": 228684
   },
   {
-    "symbol": "KEC",
-    "close": 871.55,
-    "ema44": 864.89,
-    "volume": 428058
+    "symbol": "JYOTHYLAB",
+    "close": 346.3,
+    "ema44": 345.84,
+    "volume": 29535
   },
   {
-    "symbol": "LICHSGFIN",
-    "close": 606.9,
-    "ema44": 602.53,
-    "volume": 1171906
+    "symbol": "KNRCON",
+    "close": 222.4,
+    "ema44": 220.43,
+    "volume": 127706
   },
   {
-    "symbol": "LINDEINDIA",
-    "close": 6840.5,
-    "ema44": 6817.74,
-    "volume": 26193
+    "symbol": "LICI",
+    "close": 926.7,
+    "ema44": 919.56,
+    "volume": 59641
   },
   {
-    "symbol": "MAHSEAMLES",
-    "close": 706.1,
-    "ema44": 705.71,
-    "volume": 149564
+    "symbol": "LLOYDSME",
+    "close": 1468.9,
+    "ema44": 1458.96,
+    "volume": 26809
   },
   {
-    "symbol": "M&MFIN",
-    "close": 268.15,
-    "ema44": 267.01,
-    "volume": 2123415
+    "symbol": "MMTC",
+    "close": 68.3,
+    "ema44": 68.12,
+    "volume": 100335
   },
   {
-    "symbol": "M&M",
-    "close": 3092.1,
-    "ema44": 3081.82,
-    "volume": 2958843
+    "symbol": "MAXHEALTH",
+    "close": 1219.1,
+    "ema44": 1217.28,
+    "volume": 382329
   },
   {
-    "symbol": "MRPL",
-    "close": 141.98,
-    "ema44": 141.14,
-    "volume": 1357590
-  },
-  {
-    "symbol": "MARUTI",
-    "close": 12514.0,
-    "ema44": 12485.82,
-    "volume": 246737
-  },
-  {
-    "symbol": "MEDPLUS",
-    "close": 879.1,
-    "ema44": 872.16,
-    "volume": 79331
+    "symbol": "NBCC",
+    "close": 115.09,
+    "ema44": 114.89,
+    "volume": 927203
   },
   {
     "symbol": "NSLNISP",
-    "close": 39.16,
-    "ema44": 39.03,
-    "volume": 1802513
+    "close": 39.36,
+    "ema44": 39.06,
+    "volume": 304424
   },
   {
-    "symbol": "NESTLEIND",
-    "close": 2392.9,
-    "ema44": 2390.06,
-    "volume": 471457
+    "symbol": "OBEROIRLTY",
+    "close": 1845.0,
+    "ema44": 1827.61,
+    "volume": 94095
   },
   {
     "symbol": "ONGC",
-    "close": 244.22,
-    "ema44": 244.13,
-    "volume": 7568906
+    "close": 244.95,
+    "ema44": 244.03,
+    "volume": 1208004
   },
   {
-    "symbol": "OLECTRA",
-    "close": 1212.3,
-    "ema44": 1204.53,
-    "volume": 196044
+    "symbol": "PAGEIND",
+    "close": 47315.0,
+    "ema44": 47142.15,
+    "volume": 1174
   },
   {
-    "symbol": "PVRINOX",
-    "close": 981.25,
-    "ema44": 978.01,
-    "volume": 299356
+    "symbol": "POWERGRID",
+    "close": 298.1,
+    "ema44": 295.39,
+    "volume": 1143472
+  },
+  {
+    "symbol": "PRAJIND",
+    "close": 504.2,
+    "ema44": 499.35,
+    "volume": 139245
   },
   {
     "symbol": "RHIM",
-    "close": 475.5,
-    "ema44": 472.49,
-    "volume": 83913
+    "close": 475.45,
+    "ema44": 473.44,
+    "volume": 23140
   },
   {
-    "symbol": "SAFARI",
-    "close": 2188.4,
-    "ema44": 2177.61,
-    "volume": 35553
+    "symbol": "RITES",
+    "close": 276.5,
+    "ema44": 275.62,
+    "volume": 75123
   },
   {
-    "symbol": "SHRIRAMFIN",
-    "close": 669.75,
-    "ema44": 667.74,
-    "volume": 2832157
+    "symbol": "RAILTEL",
+    "close": 408.25,
+    "ema44": 404.56,
+    "volume": 277118
   },
   {
-    "symbol": "SBIN",
-    "close": 808.85,
-    "ema44": 800.92,
-    "volume": 6938635
+    "symbol": "SJVN",
+    "close": 98.77,
+    "ema44": 98.5,
+    "volume": 527859
   },
   {
-    "symbol": "SUNDARMFIN",
-    "close": 5046.0,
-    "ema44": 5030.01,
-    "volume": 50966
+    "symbol": "SAREGAMA",
+    "close": 513.65,
+    "ema44": 512.57,
+    "volume": 1492812
   },
   {
-    "symbol": "SUVENPHAR",
-    "close": 1031.25,
-    "ema44": 1026.24,
-    "volume": 201430
+    "symbol": "SIGNATURE",
+    "close": 1243.4,
+    "ema44": 1235.99,
+    "volume": 36597
   },
   {
-    "symbol": "TVSMOTOR",
-    "close": 2802.2,
-    "ema44": 2791.62,
-    "volume": 1072824
+    "symbol": "SONACOMS",
+    "close": 485.8,
+    "ema44": 484.37,
+    "volume": 1337821
+  },
+  {
+    "symbol": "SPARC",
+    "close": 160.9,
+    "ema44": 159.78,
+    "volume": 139248
+  },
+  {
+    "symbol": "SUNPHARMA",
+    "close": 1696.6,
+    "ema44": 1689.43,
+    "volume": 102500
+  },
+  {
+    "symbol": "TATACONSUM",
+    "close": 1103.5,
+    "ema44": 1098.81,
+    "volume": 89692
+  },
+  {
+    "symbol": "TATAINVEST",
+    "close": 6601.5,
+    "ema44": 6596.24,
+    "volume": 1465
+  },
+  {
+    "symbol": "TATATECH",
+    "close": 722.6,
+    "ema44": 720.99,
+    "volume": 134177
+  },
+  {
+    "symbol": "NIACL",
+    "close": 184.85,
+    "ema44": 183.83,
+    "volume": 71065
+  },
+  {
+    "symbol": "UCOBANK",
+    "close": 32.27,
+    "ema44": 31.95,
+    "volume": 1312531
   },
   {
     "symbol": "VEDL",
     "close": 448.2,
-    "ema44": 447.29,
-    "volume": 5611380
+    "ema44": 447.24,
+    "volume": 930134
+  },
+  {
+    "symbol": "YESBANK",
+    "close": 20.19,
+    "ema44": 20.04,
+    "volume": 11295446
+  },
+  {
+    "symbol": "ZFCVINDIA",
+    "close": 13243.0,
+    "ema44": 13134.17,
+    "volume": 792
+  },
+  {
+    "symbol": "ZENSARTECH",
+    "close": 825.95,
+    "ema44": 825.04,
+    "volume": 83279
   }
 ]

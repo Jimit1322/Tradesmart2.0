@@ -53,8 +53,8 @@ for symbol in symbols:
 
         # Latest candle values
         latest = merged.iloc[-1]
-        latest_close = float(latest["Close"])
-        latest_ema = float(latest["EMA44"])
+        latest_close = (latest["Close"])
+        latest_ema = (latest["EMA44"])
         latest_vol = int(latest["Volume"])
         
         if latest_close-latest_ema<0:

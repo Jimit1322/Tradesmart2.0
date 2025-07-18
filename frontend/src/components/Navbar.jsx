@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const Navbar = ({ onSearch }) => {
   return (
     <div
@@ -23,7 +24,7 @@ const Navbar = ({ onSearch }) => {
           fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
         }}
       >
-        TradeSmart
+  TradeSmart
       </h1>
 
       <input
