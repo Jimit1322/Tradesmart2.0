@@ -15,9 +15,9 @@ collection = db["scan_1m"]
 # --- Fetch trades to backtest ---
 pending_trades = list(collection.find({ "strategy": "1m_momentum", "status": "pending" }))
 no_hit_trades = list(collection.find({ "strategy": "1m_momentum", "status": "no_hit" }))
-
-all_trades = pending_trades + no_hit_trades
-print(f"🟡 Found {len(all_trades)} total 1m trades to backtest...")
+no_data_trades=list(collection.find({"strategy":"1m_momentum","status":"no_data"}))
+all_trades = pending_trades + no_hit_trades+no_data_trades
+print(f"🟡 Found {len(all_trades),len(pending_trades),len(no_data_trades)} total 1m trades to backtest...")
 
 for trade in all_trades:
     symbol = trade["symbol"] + ".NS"

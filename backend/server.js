@@ -13,6 +13,7 @@ import cors from 'cors';
 import path from 'path';
 import { getCollection } from './db.js';
 import cron from 'node-cron';
+import { fileURLToPath } from 'url';
 
 
 const app = express();
@@ -55,10 +56,11 @@ app.get('/api/scan/intraday', async (req, res) => {
   runScanAndFetch("5m", "scan_momentum_5min.py", "5m_momentum", "scan_5m");
   runScanAndFetch("1m", "scan_momentum_1min.py", "1m_momentum", "scan_1m");
 });
-
-// --- /api/scan/daily → Daily 44 EMA scan from results_44_daily.json ---
+const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 app.get('/api/scan/daily', (req, res) => {
-  const resultPath = path.join('scan', 'results_44_daily.json');
+  
+  const resultPath = path.join(__dirname, 'scan', 'results_44_daily.json');
 
   try {
     const stats = fs.statSync(resultPath);
@@ -77,13 +79,18 @@ app.get('/api/scan/daily', (req, res) => {
       return res.json({ daily: data });
     }
   } catch (err) {
-    console.log("⚠️ No daily scan result found or invalid, will generate fresh.");
+    console.log("⚠️ No cached daily result found, generating fresh...");
   }
 
-  console.log("🔁 Running fresh daily scan (44 EMA)");
-  const process = exec('python3 scan_44ema_daily.py', { cwd: 'scan' });
+  console.log("🔁 Running fresh daily scan (44 EMA)...");
+  const scanProcess = exec('python3 scan_44ema_daily.py', { cwd: path.join(__dirname, 'scan') });
 
-  process.on('close', () => {
+  scanProcess.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`❌ Python script exited with code ${code}`);
+      return res.status(500).json({ daily: [] });
+    }
+
     try {
       const raw = fs.readFileSync(resultPath, 'utf8');
       const data = JSON.parse(raw);
@@ -91,16 +98,10 @@ app.get('/api/scan/daily', (req, res) => {
       res.json({ daily: data });
     } catch (err) {
       console.error("❌ Failed to read daily results:", err.message);
-      res.json({ daily: [] });
+      res.status(500).json({ daily: [] });
     }
   });
-
-  process.on('error', (err) => {
-    console.error("❌ Error running daily scan script:", err.message);
-    res.status(500).json({ error: "Failed to execute daily scan" });
-  });
 });
-
 // --- /api/ohlc/:symbol?tf=... → Live OHLC + EMA from fetch_ohlc.py ---
 app.get('/api/ohlc/:symbol', (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
@@ -137,8 +138,16 @@ app.get("/api/history/5m", async (req, res) => {
   try {
     const collection = await getCollection("scan_5m");
 
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    monday.setHours(0, 0, 0, 0);
+
     const results = await collection
-      .find({ strategy: "5m_momentum" })
+      .find({
+        strategy: "5m_momentum",
+        timestamp: { $gte: monday.toISOString() }, // ✅ Filter only this week's data
+      })
       .sort({ timestamp: -1 })
       .limit(1000)
       .toArray();
@@ -171,8 +180,16 @@ app.get("/api/history/1m", async (req, res) => {
   try {
     const collection = await getCollection("scan_1m");
 
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    monday.setHours(0, 0, 0, 0);
+
     const results = await collection
-      .find({ strategy: "1m_momentum" })
+      .find({
+        strategy: "1m_momentum",
+        timestamp: { $gte: monday.toISOString() }, // ✅ Filter only this week's data
+      })
       .sort({ timestamp: -1 })
       .limit(1000)
       .toArray();
@@ -201,14 +218,6 @@ app.get("/api/history/1m", async (req, res) => {
   }
 });
 
-cron.schedule('*/15 * * * *', () => {
-  console.log("⏱️ Running 1m backtest...");
-  exec('python3 scan/backtest_wins_1min.py', (err, stdout, stderr) => {
-    if (err) return console.error("❌ 1m Backtest error:", err.message);
-    console.log(stdout);
-  });
-});
-
 // Run 5m backtest every 30 minutes
 cron.schedule('*/30 * * * *', () => {
   console.log("⏱️ Running 5m backtest...");
@@ -217,6 +226,9 @@ cron.schedule('*/30 * * * *', () => {
     console.log(stdout);
   });
 });
+
+
+
 
 
 app.get("/api/summary", async (req, res) => {
@@ -256,6 +268,9 @@ app.get("/api/summary", async (req, res) => {
 });
 
 // 🕒 Weekly cleanup and summary every Sunday at 6:00 PM
+
+
+// Every Sunday at 6:00 PM
 cron.schedule("0 18 * * 0", () => {
   const scriptPath = path.join("scan", "cleanup_and_summarize.py");
   console.log("🧹 Running weekly cleanup_and_summarize.py...");
@@ -271,7 +286,51 @@ cron.schedule("0 18 * * 0", () => {
     console.log(`✅ Cleanup Output:\n${stdout}`);
   });
 });
+// backend/routes/summary.js or index.js
+app.get("/api/summary/all", async (req, res) => {
+  try {
+    const collection = await getCollection("weekly_summary");
 
+    const raw = await collection.find().sort({ created_at: -1 }).toArray();
+
+    // 🧠 Merge by week_start + week_end
+    const summaryMap = {};
+
+    for (const item of raw) {
+      const weekKey = `${item.week_start} → ${item.week_end}`;
+
+      if (!summaryMap[weekKey]) {
+        summaryMap[weekKey] = { week: weekKey };
+      }
+
+      if (item.strategy === "5m_momentum") {
+        summaryMap[weekKey].summary_5m = {
+          wins: item.wins,
+          losses: item.losses,
+          winRate: item.win_rate,
+          noHits: item.no_hits || 0, // fallback
+        };
+      } else if (item.strategy === "1m_momentum") {
+        summaryMap[weekKey].summary_1m = {
+          wins: item.wins,
+          losses: item.losses,
+          winRate: item.win_rate,
+          noHits: item.no_hits || 0,
+        };
+      }
+    }
+
+    // 🔃 Convert to array sorted by most recent
+    const mergedSummaries = Object.values(summaryMap).sort((a, b) =>
+      b.week.localeCompare(a.week)
+    );
+
+    res.json(mergedSummaries);
+  } catch (err) {
+    console.error("❌ Summary list fetch error:", err.message);
+    res.status(500).json({ error: "Failed to fetch summaries" });
+  }
+});
 
 
 

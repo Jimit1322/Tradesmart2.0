@@ -9,9 +9,10 @@ collection = db["scan_5m"]
 
 pending_trades = list(collection.find({ "strategy": "5m_momentum", "status": "pending" }))
 no_hit_trades=list(collection.find({"strategy": "5m_momentum", "status": "no_hit"}))
-print(f"🟡 Found {len(pending_trades) ,len(no_hit_trades)} pending trades to backtest...")
+no_data_trades=list(collection.find({"strategy": "5m_momentum", "status": "no_data"}))
+print(f"🟡 Found {len(pending_trades) ,len(no_hit_trades),len(no_data_trades)} pending trades to backtest...")
 
-for trade in (pending_trades + no_hit_trades):
+for trade in (pending_trades + no_hit_trades+no_data_trades):
     symbol = trade["symbol"] + ".NS"
     entry_time = pd.to_datetime(trade["timestamp"])
     target =float (trade["target"])

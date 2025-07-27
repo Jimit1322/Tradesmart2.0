@@ -58,7 +58,7 @@ const StockChart = ({ symbol, tf }) => {
           color: item.close > item.open ? "#26a69a" : "#ef5350",
         }));
 
-        chartContainerRef.current.innerHTML = `<div id="chart-info-bar" style="padding: 6px 12px;background: #1e222d;color: #aab2bf;font-size: 13px;font-family: monospace;border-bottom: 1px solid #2c313d;">Hover over a candle to see details...</div>`;
+        chartContainerRef.current.innerHTML = `<div id="chart-info-bar" style="padding: 8px 16px;background: #12151c;color: #d3d6db;font-size: 13px;font-family: monospace;border-bottom: 1px solid #2c313d;position: sticky;top: 0;">Hover over a candle to see details...</div>`;
         const chartCanvas = document.createElement("div");
         chartCanvas.style.height = "480px";
         chartContainerRef.current.appendChild(chartCanvas);
@@ -140,47 +140,38 @@ const StockChart = ({ symbol, tf }) => {
   }, [symbol, timeframe, showVolume, showEma9, showEma22, showEma44, showRR]);
 
   return (
-    <div style={{ marginTop: "2rem" }}>
-      <h3 style={{ textAlign: "center", color: "#26a69a" }}>📊 {symbol} Chart</h3>
-
-      {illiquidWarning && (
-        <div style={{
-          textAlign: "center",
-          background: "#2c2f3a",
-          color: "#f39c12",
-          fontSize: "13px",
-          padding: "6px",
-          borderRadius: "6px",
-          margin: "10px auto",
-          width: "fit-content"
-        }}>
-          {illiquidWarning}
-        </div>
-      )}
-
-      <div style={{ textAlign: "center", marginBottom: 10 }}>
-        <button onClick={() => setShowVolume((prev) => !prev)} style={{ marginRight: "8px", padding: "6px 12px", background: "#1e88e5", border: "none", borderRadius: "4px", cursor: "pointer", color: "#fff", fontSize: "13px" }}>
-          {showVolume ? "Hide Volume" : "Show Volume"}
-        </button>
-        <label style={{ color: "#ccc", marginRight: 10 }}><input type="checkbox" checked={showEma9} onChange={() => setShowEma9(!showEma9)} /> EMA9</label>
-        <label style={{ color: "#ccc", marginRight: 10 }}><input type="checkbox" checked={showEma22} onChange={() => setShowEma22(!showEma22)} /> EMA22</label>
-        <label style={{ color: "#ccc", marginRight: 10 }}><input type="checkbox" checked={showEma44} onChange={() => setShowEma44(!showEma44)} /> EMA44</label>
-        <label style={{ color: "#ccc" }}><input type="checkbox" checked={showRR} onChange={() => setShowRR(!showRR)} /> Entry/SL/Target</label>
+    <div style={{ marginTop: "2rem", background: "#12151c", borderRadius: "10px", boxShadow: "0 0 20px rgba(0,0,0,0.4)", padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <h3 style={{ color: "#26a69a", fontWeight: "bold" }}>📊 {symbol} ({timeframe})</h3>
+        {illiquidWarning && (
+          <span style={{ color: "#f39c12", fontSize: "13px", background: "#2c2f3a", padding: "4px 10px", borderRadius: "4px" }}>
+            {illiquidWarning}
+          </span>
+        )}
       </div>
 
-      <div
-        ref={chartContainerRef}
-        style={{
-          width: "100%",
-          height: "100%",
-          background: "#1e222d",
-          borderRadius: "8px",
-          padding: "10px",
-          boxShadow: "0 0 10px rgba(0,0,0,0.5)"
-        }}
-      />
+      <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+        <button onClick={() => setShowVolume(v => !v)} style={btnStyle("#1e88e5")}>{showVolume ? "Hide Volume" : "Show Volume"}</button>
+        <button onClick={() => setShowEma9(v => !v)} style={btnStyle("#00bcd4")}>EMA9</button>
+        <button onClick={() => setShowEma22(v => !v)} style={btnStyle("#f39c12")}>EMA22</button>
+        <button onClick={() => setShowEma44(v => !v)} style={btnStyle("#ab47bc")}>EMA44</button>
+        <button onClick={() => setShowRR(v => !v)} style={btnStyle("#66bb6a")}>Entry/SL/Target</button>
+      </div>
+
+      <div ref={chartContainerRef} />
     </div>
   );
 };
+
+const btnStyle = (bg) => ({
+  background: bg,
+  border: "none",
+  color: "#fff",
+  padding: "6px 12px",
+  borderRadius: "6px",
+  fontSize: "13px",
+  cursor: "pointer",
+  transition: "background 0.3s ease",
+});
 
 export default StockChart;
